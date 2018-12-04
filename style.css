@@ -8,7 +8,25 @@ body {
 p {
 	font: normal 20px Roboto, sans-serif;
 	font-weight: 400;
-	text-shadow: .03em .02em #a57d2c;
-
+	
 	color: #ffb92d;
+	text-shadow: .03em .02em #a57d2c;
+}
+
+#hello {
+	font: normal 60px Roboto, sans-serif;
+	font-weight: 200;
+	
+	color: #ffb92d;
+	text-shadow: .03em .02em #a57d2c;
+	
+	float: left;
+	margin: 0 1.5%;
+	width: 67%;
+}
+
+#main-script {
+	float: right;
+	margin 0 1.5%;
+	width: 20%;
 }
