@@ -17,7 +17,7 @@ p {
 	width: 67%;
 }
 
-script {
+#clickScript {
 	float: right;
 	margin 0 1.5%;
 	width: 20%;
