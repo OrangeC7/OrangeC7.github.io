@@ -11,4 +11,14 @@ p {
 	text-shadow: .03em .02em #a57d2c;
 
 	color: #ffb92d;
+	
+	float: left;
+	margin: 0 1.5%;
+	width: 67%;
+}
+
+script {
+	float: right;
+	margin 0 1.5%;
+	width: 20%;
 }
