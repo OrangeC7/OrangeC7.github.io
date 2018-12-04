@@ -12,18 +12,3 @@ p {
 
 	color: #ffb92d;
 }
-
-#test-p {
-	font-size: 60px;
-	font-weight: 200;
-	
-	float: left;
-	margin: 0 1.5%;
-	width: 67%;
-}
-
-#clickScript {
-	float: right;
-	margin 0 1.5%;
-	width: 20%;
-}
