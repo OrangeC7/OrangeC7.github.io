@@ -4,8 +4,8 @@ function setup() {
 
 function draw() {
 	background(220)
-}
-
-function mousePressed() {
-	background(40, 150, 69)
+  
+  if (mouseIsPressed) {
+    background(0)
+  }
 }
