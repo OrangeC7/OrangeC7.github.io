@@ -14,7 +14,7 @@ p {
 }
 
 #hello {
-	font: normal 60px Roboto, sans-serif;
+	font: normal 3em Roboto, sans-serif;
 	font-weight: 200;
 	
 	color: #ffb92d;
@@ -27,6 +27,6 @@ p {
 
 #main-script {
 	float: right;
-	margin 0 1.5%;
+	margin: 0 1.5%;
 	width: 20%;
 }
