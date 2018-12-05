@@ -1,16 +1,22 @@
-body {
+body, html {
 	margin-top: 8px;
     margin-right: 20px;
     margin-bottom: 8px;
     margin-left: 20px;
+	
+	font: normal 12px Roboto, sans-serif;
 }
 
 p {
-	font: normal 20px Roboto, sans-serif;
+	font-size: 1.67em;
 	font-weight: 400;
 	
 	color: #ffb92d;
 	text-shadow: .03em .02em #a57d2c;
+}
+
+form {
+	font: normal 1.33em Roboto, sans-serif;
 }
 
 #hello {
