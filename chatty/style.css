@@ -7,16 +7,12 @@ body, html {
 	font: normal 12px Roboto, sans-serif;
 }
 
-p {
+form {
 	font-size: 1.67em;
 	font-weight: 400;
 	
 	color: #ffb92d;
 	text-shadow: .03em .02em #a57d2c;
-}
-
-form {
-	font: normal 1.33em Roboto, sans-serif;
 }
 
 #main-script {
