@@ -1,0 +1,8 @@
+body, html {
+	margin-top: 8px;
+    margin-right: 20px;
+    margin-bottom: 8px;
+    margin-left: 20px;
+	
+	font: normal 11px Roboto, sans-serif;
+}

@@ -19,4 +19,4 @@ function sketch(p) {
 	}
 }
 
-new p5(sketch, 'test-script');
+new p5(sketch, 'test-script')
