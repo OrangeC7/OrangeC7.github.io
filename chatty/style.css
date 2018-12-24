@@ -8,9 +8,18 @@ body, html {
 }
 
 p {
-	font: normal 3em Roboto, sans-serif;
-	font-weight: 200;
+	font-size: 1.67em;
+	font-weight: 400;
 	
 	color: #ffb92d;
 	text-shadow: .03em .02em #a57d2c;
+}
+
+form {
+	font: normal 1.33em Roboto, sans-serif;
+}
+
+#main-script {
+	float: right;
+	width: 20%;
 }
