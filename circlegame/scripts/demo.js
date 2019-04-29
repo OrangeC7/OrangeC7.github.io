@@ -119,3 +119,14 @@ function keyPressed() {
 		break
 	}
 }
+
+// Allow touch functionality
+let lastPressFrame;
+function mouseDragged() {
+  if (!paused) {
+    let mpos = createVector(mouseX, mouseY)
+    let dir = mpos.sub(player.pos).normalize() // Calculate normal vector in direction of mouse
+    player.move(dir.x * playerSpeed, dir.y * playerSpeed)
+    lastPressFrame = frameCount
+  }
+}
