@@ -65,12 +65,7 @@ class Movable {
   
   show(colour, scale, add) {
     if (scale == null) scale = 1.0
-	if (add == null) add = false
-    
-    if (colour == null) fill(this.colour)
-    else fill(colour)
-    if (add) ellipse(this.pos.x, this.pos.y, (this.r * 2) + scale)
-	else ellipse(this.pos.x, this.pos.y, this.r * 2 * scale)
+    if (add == null) add = false
     
     if (colour == null) {
       let re = red(this.colour)
@@ -83,8 +78,13 @@ class Movable {
       let bl = blue(colour)
       fill(re * 0.8, gr * 0.8, bl * 0.8)
     }
-	if (add) ellipse(this.pos.x, this.pos.y, ((this.r * 2) - outlineWidth) + scale)
-	else ellipse(this.pos.x, this.pos.y, ((this.r * 2) - outlineWidth) * scale)
+    if (add) ellipse(this.pos.x, this.pos.y, (this.r * 2) + scale)
+    else ellipse(this.pos.x, this.pos.y, this.r * 2 * scale)
+    
+    if (colour == null) fill(this.colour)
+    else fill(colour)
+    if (add) ellipse(this.pos.x, this.pos.y, ((this.r * 2) - outlineWidth) + scale)
+    else ellipse(this.pos.x, this.pos.y, ((this.r * 2) - outlineWidth) * scale)
   }
 
 }
