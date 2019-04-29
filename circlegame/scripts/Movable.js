@@ -22,13 +22,23 @@ class Movable {
   // Get toroidal distance to another movable (close to opposite edge could still be close)
   // https://stackoverflow.com/a/3041398
   distance(movable) {
-    let dx = abs(this.pos.x - movable.pos.x)
-    if (dx > width/2) dx = width - dx
-    
-    let dy = abs(this.pos.y - movable.pos.y)
-    if (dy > height/2) dy = height - dy
-    
-    return sqrt(sq(dx) + sq(dy))
+    if (movable instanceof Movable) {
+      let dx = abs(this.pos.x - movable.pos.x)
+      if (dx > width / 2) dx = width - dx
+
+      let dy = abs(this.pos.y - movable.pos.y)
+      if (dy > height / 2) dy = height - dy
+
+      return sqrt(sq(dx) + sq(dy))
+    } else {
+      let dx = abs(this.pos.x - movable.x)
+      if (dx > width / 2) dx = width - dx
+
+      let dy = abs(this.pos.y - movable.y)
+      if (dy > height / 2) dy = height - dy
+
+      return sqrt(sq(dx) + sq(dy))
+    }
   }
   
   // Copy this movable
