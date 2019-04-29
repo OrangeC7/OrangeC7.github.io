@@ -54,7 +54,7 @@ class Movable {
     this.pos = loopPos(this.pos, zeroVector, createVector(width, height), this.r)
 
 	if (deltaTime) {
-		// Move based on change in time, not per frame
+		// Move based on change in time, not per frame (Not working)
 		this.vel.add(this.acc * (60/frameRate()))
 		this.pos.add(this.vel * (60/frameRate()))
 	} else {
