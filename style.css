@@ -36,7 +36,7 @@ header {
   background-color: #333333;
 }
 
-footer {font: normal 0.8em;
+footer {
 	padding: 10px;
   
   color: #F1F1F1;
@@ -48,19 +48,15 @@ footer {font: normal 0.8em;
 }
 
 .content {
-  padding: 20px;
+  padding: 2vh;
   
   min-height: 100vh;
-}
-
-.project-link {
-	
 }
 
 .description {
 	font-size: 0.8em;
 	
-  padding-left: 10px;
+  padding-left: 1em;
   
 	color: #7f4a00;
 }
