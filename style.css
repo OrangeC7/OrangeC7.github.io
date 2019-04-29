@@ -1,16 +1,66 @@
-body, html {
-	margin-top: 8px;
-    margin-right: 20px;
-    margin-bottom: 8px;
-    margin-left: 20px;
-	
-	font: normal 12px Roboto, sans-serif;
+body {
+  padding: 0;
+  margin: 0;
+  
+  background-color: #dcdcdc;
+  
+  font: normal 18px "Roboto", sans-serif;
 }
 
-p {
-	font: normal 3em Roboto, sans-serif;
-	font-weight: 200;
+a:link {
+  color: #ff8300;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #3f2000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff8300;
+  text-decoration: underline;
+}
+
+header {
+  border: 0px;
+  padding: 10px;
+  
+  color: #ff8300;
+  font-size: 2.5em;
+  font-family: "Roboto Medium", sans-serif;
+  
+  text-align: center;
+	text-shadow: .03em .03em #7f4100;
+  
+  background-color: #333333;
+}
+
+footer {font: normal 0.8em;
+	padding: 10px;
+  
+  color: #F1F1F1;
+  
+  font-size: 12px;
+  
+	background-color: #313131;
+	text-align: center;
+}
+
+.content {
+  padding: 20px;
+  
+  min-height: 100vh;
+}
+
+.project-link {
 	
-	color: #ffb92d;
-	text-shadow: .03em .02em #a57d2c;
+}
+
+.description {
+	font-size: 0.8em;
+	
+  padding-left: 10px;
+  
+	color: #7f4a00;
 }
