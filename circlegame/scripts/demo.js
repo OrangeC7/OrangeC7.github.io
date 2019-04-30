@@ -15,6 +15,13 @@ function setup() {
 	createCanvas(window.innerWidth, window.innerHeight)
 	window.addEventListener("resize", function(event) {
 		resizeCanvas(window.innerWidth, window.innerHeight)
+    if (!scaleUp) {
+      midVector = createVector(width / 2, height / 2)
+      dimVector = createVector(width, height)
+    } else {
+      midVector = createVector(width / 4, height / 4)
+      dimVector = createVector(width / 2, height / 2)
+    }
 	})
 	noSmooth()
 	noStroke()
@@ -129,7 +136,6 @@ function mousePressed() {
       
       // It turns out these were useful after all :P
       midVector = createVector(width / 4, height / 4)
-      zeroVector = createVector(0, 0)
       dimVector = createVector(width / 2, height / 2)
       
       initSketch()
@@ -138,7 +144,6 @@ function mousePressed() {
       
       // It turns out these were useful after all :P
       midVector = createVector(width / 2, height / 2)
-      zeroVector = createVector(0, 0)
       dimVector = createVector(width, height)
       
       initSketch()
