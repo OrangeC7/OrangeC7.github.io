@@ -90,7 +90,9 @@ function controls() {
   
   // Allow touch functionality
   if (mouseIsPressed) {
-    let mpos = createVector(mouseX, mouseY)
+    let mpos
+    if (scaleUp) mpos = createVector(mouseX/2, mouseY/2) 
+    else mpos = createVector(mouseX, mouseY)
     let dir = mpos.sub(player.pos).normalize() // Calculate normal vector in direction of mouse
     player.move(dir.x * playerSpeed, dir.y * playerSpeed)
     lastPressFrame = frameCount
