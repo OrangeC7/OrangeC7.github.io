@@ -14,7 +14,7 @@ const scaleButtonSize = 10 // Larger numbers are smaller, size of button that ch
 // Simulation settings
 
 // Self explanatory obstacle settings
-const numObstacles = 10
+const numObstacles = 15
 const maxObstacleVelocity = 2
 const minObstacleRadius = 10
 const maxObstacleRadius = 15
