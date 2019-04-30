@@ -30,8 +30,14 @@ function setup() {
 }
 
 function initSketch() {
-	// For player and controls settings go to options.js. Change to "AIPlayer" to initiate a random network to control the player
-	player = new Player(width / 2, height / 2, 20, playerColour)
+	let w = width
+  let h = height
+  if (scaleUp) {
+    w = w / 2
+    h = h / 2
+  }
+  // For player and controls settings go to options.js. Change to "AIPlayer" to initiate a random network to control the player
+	player = new Player(w / 2, h / 2, 20, playerColour)
 
 	// For obstacles settings go to options.js
 	initObstacles()

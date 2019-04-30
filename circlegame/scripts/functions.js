@@ -16,13 +16,19 @@ function loopPos(mpos, minpos, maxpos, r) {
 }
 
 function initObstacles() {
+  let w = width
+  let h = height
+  if (scaleUp) {
+    w = w/2
+    h = h/2
+  }
   for (let i = 0; i < numObstacles; i++) {
     // X and Y positions must not be in middle third (ninth?) of screen
-    let x = random(width)
-	let y = random(height)
-    while (x > width / freeSpace && x < width * (freeSpace-1) / freeSpace && y > height / freeSpace && y < height * (freeSpace-1) / freeSpace) {
-		x = random(width)
-		y = random(height)
+    let x = random(w)
+	let y = random(h)
+    while (x > w / freeSpace && x < w * (freeSpace-1) / freeSpace && y > h / freeSpace && y < h * (freeSpace-1) / freeSpace) {
+		x = random(w)
+		y = random(h)
 	}
     
     // Repopulate the obstacles array
