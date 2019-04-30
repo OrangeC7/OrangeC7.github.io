@@ -9,6 +9,8 @@ const right = 68 // Alternate right movement key (68 = 'd')
 
 const playerSpeed = 0.08 // 1 is very fast, 0.01 is very slow
 
+const scaleButtonSize = 10 // Larger numbers are smaller, size of button that changes scale
+
 // Simulation settings
 
 // Self explanatory obstacle settings

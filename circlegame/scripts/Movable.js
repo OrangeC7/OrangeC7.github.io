@@ -51,7 +51,7 @@ class Movable {
 	if (deltaTime == null) deltaTime = false
     const r = this.r
 
-    this.pos = loopPos(this.pos, zeroVector, createVector(width, height), this.r)
+    this.pos = loopPos(this.pos, zeroVector, dimVector, this.r)
 
 	if (deltaTime) {
 		// Move based on change in time, not per frame (Not working)

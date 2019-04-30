@@ -6,6 +6,11 @@ let obstacles = []
 let paused = false
 let pauseFrame = 0
 
+let lastPressFrame = 0
+
+let scaleUp = false
+let scaleSize = 1
+
 function setup() {
 	createCanvas(window.innerWidth, window.innerHeight)
 	window.addEventListener("resize", function(event) {
@@ -20,6 +25,8 @@ function setup() {
 	dimVector = createVector(width, height)
 
 	initSketch()
+  
+  frameRate(60) // Forcing sketch to run at 60 fps, if possible
 }
 
 function initSketch() {
@@ -31,7 +38,7 @@ function initSketch() {
 }
 
 function draw() {
-	background(45)
+  scale(scaleSize)
 	background(45)
 
 	// Update everything
@@ -62,8 +69,8 @@ function draw() {
 		obstacle.show(warningColour, 1, true)
 	}
 
-	// If paused, show pause animation
-	pauseAnim()
+	pauseAnim() // If paused, show pause animation
+  scaleButton() // Show scale button
 }
 
 function controls() {
@@ -80,37 +87,19 @@ function controls() {
 	if (keyIsDown(RIGHT_ARROW) || keyIsDown(right)) {
 		player.move(playerSpeed, 0)
 	}
-
-	// switch (key) {
-	//   case 'w':
-	//     player.move(0, -playerSpeed)
-	//     // break
-	//   case 'a':
-	//     player.move(-playerSpeed, 0)
-	//     // break
-	//   case 's':
-	//     player.move(0, playerSpeed)
-	//     // break
-	//   case 'd':
-	//     player.move(playerSpeed, 0)
-	//     // break
-	// }
-	// switch (keyCode) {
-	//   case 38:
-	//     player.move(0, -playerSpeed)
-	//     break
-	//   case 37:
-	//     player.move(-playerSpeed, 0)
-	//     break
-	//   case 40:
-	//     player.move(0, playerSpeed)
-	//     break
-	//   case 39:
-	//     player.move(playerSpeed, 0)
-	//     break
-	// }
+  
+  // Allow touch functionality
+  if (mouseIsPressed) {
+    let mpos = createVector(mouseX, mouseY)
+    let dir = mpos.sub(player.pos).normalize() // Calculate normal vector in direction of mouse
+    player.move(dir.x * playerSpeed, dir.y * playerSpeed)
+    lastPressFrame = frameCount
+  }
 }
 
+// Pause the sketch if key is pressed
+// Not part of controls because keyPressed activates once per press,
+//  controls checks every frame
 function keyPressed() {
 	switch (key) {
 	case ' ': // Pause
@@ -120,13 +109,32 @@ function keyPressed() {
 	}
 }
 
-// Allow touch functionality
-let lastPressFrame;
-function mouseDragged() {
-  if (!paused) {
-    let mpos = createVector(mouseX, mouseY)
-    let dir = mpos.sub(player.pos).normalize() // Calculate normal vector in direction of mouse
-    player.move(dir.x * playerSpeed, dir.y * playerSpeed)
-    lastPressFrame = frameCount
+// Button on bottom right to change scale of Movables for higher pixel density screens
+function mousePressed() {
+  if (mouseIsPressed &&
+      mouseX > width * (scaleButtonSize-1)/scaleButtonSize &&
+      mouseY > height * (scaleButtonSize-1)/scaleButtonSize)
+  {
+    scaleUp = !scaleUp
+    if (scaleUp) {
+      scaleSize = 2
+      
+      // It turns out these were useful after all :P
+      midVector = createVector(width / 4, height / 4)
+      zeroVector = createVector(0, 0)
+      dimVector = createVector(width / 2, height / 2)
+      
+      initSketch()
+    } else {
+      scaleSize = 1
+      
+      // It turns out these were useful after all :P
+      midVector = createVector(width / 2, height / 2)
+      zeroVector = createVector(0, 0)
+      dimVector = createVector(width, height)
+      
+      initSketch()
+    }
+    
   }
 }

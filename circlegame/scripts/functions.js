@@ -69,3 +69,23 @@ function pauseAnim() {
     rect(padding * 1.5 + w, height - padding - h, w, h)
   }
 }
+
+// Draw scale button ('size' is the size of the button, larger numbers are smaller)
+function scaleButton() {
+  let x, y, w, h
+  if (scaleUp) {
+    fill(0, 255, 0, 20)
+    w = (width/2) / scaleButtonSize
+    h = (height/2) / scaleButtonSize
+    x = (width/2) - w
+    y = (height/2) - h
+  } else {
+    fill (255, 0, 0, 20)
+    w = width / scaleButtonSize
+    h = height / scaleButtonSize
+    x = width - w
+    y = height - h
+  }
+  
+  rect(x, y, w, h)
+}
