@@ -11,6 +11,10 @@ let lastPressFrame = 0
 let scaleUp = false
 let scaleSize = 1
 
+let points = numObstacles
+
+let fCount = 0
+
 function setup() {
 	createCanvas(window.innerWidth, window.innerHeight)
 	window.addEventListener("resize", function(event) {
@@ -53,19 +57,28 @@ function initSketch() {
 function draw() {
   scale(scaleSize)
 	background(45)
-
+  
 	// Update everything
 	// For every obstacle, update
 	if (!paused) {
+    if (fCount % 60 == 0) {
+      obstacles[obstacles.length] = new Obstacle(random(width), random(height), random(minObstacleRadius, maxObstacleRadius), maxObstacleVelocity)
+      points++
+    }
+    
 		controls() // Check player controls
 		player.update(obstacles) // Update the player
-
+    
 		for (const obstacle of obstacles) {
 			obstacle.update()
 			if (player.overlaps(obstacle)) {
-				initSketch()
+				obstacles = []
+        initSketch()
+        points = numObstacles
 			}
 		}
+    
+    fCount++
 	}
 
 	// Draw everything
@@ -81,6 +94,11 @@ function draw() {
 	for (let obstacle of nearest) {
 		obstacle.show(warningColour, 1, true)
 	}
+  
+  // Show the current points
+  fill(255, 255, 255)
+  textSize(50)
+  text(points, 10, 60)
 
 	pauseAnim() // If paused, show pause animation
   scaleButton() // Show scale button

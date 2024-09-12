@@ -25,11 +25,11 @@ function initObstacles() {
   for (let i = 0; i < numObstacles; i++) {
     // X and Y positions must not be in middle third (ninth?) of screen
     let x = random(w)
-	let y = random(h)
+    let y = random(h)
     while (x > w / freeSpace && x < w * (freeSpace-1) / freeSpace && y > h / freeSpace && y < h * (freeSpace-1) / freeSpace) {
-		x = random(w)
-		y = random(h)
-	}
+      x = random(w)
+      y = random(h)
+    }
     
     // Repopulate the obstacles array
     obstacles[i] = new Obstacle(x, y, random(minObstacleRadius, maxObstacleRadius), maxObstacleVelocity)
