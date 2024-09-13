@@ -3,13 +3,54 @@
   zoom: 1.0;
 }
 
+:root {
+  --text: #0f0a06;
+  --background: #faf5f1;
+  --primary: #ff6600;
+  --secondary: #e1ab88;
+  --accent: #dc8f5c;
+}
+
 body {
   padding: 0;
   margin: 0;
-  
-  background-color: #dcdcdc;
-  
+
+  background-color: var(--background);
+
   font: normal 18px "Roboto", sans-serif;
+}
+
+header {
+  width: 100vw;
+  padding: 2vw;
+
+  position: fixed;
+
+  color: var(--primary);
+  font-size: 2.5em;
+  font-family: "Consolas", monospace;
+
+  background-color: var(--background);
+  border-bottom-width: 1px;
+  border-bottom-color: lightgray;
+  border-bottom-style: solid;
+
+  text-align: left;
+}
+
+.header-navigation {
+  margin: 0;
+  display: flex;
+
+  list-style-type: none;
+
+  font-size: 0.5em;
+
+  flex-direction: row;
+}
+
+.header-item {
+  padding: 10px;
 }
 
 a:link {
@@ -27,41 +68,27 @@ a:hover {
   text-decoration: underline;
 }
 
-header {
-  border: 0px;
-  padding: 10px;
-  
-  color: #ff8300;
-  font-size: 2.5em;
-  font-family: "Roboto Medium", sans-serif;
-  
-  text-align: center;
-	text-shadow: .03em .03em #7f4100;
-  
-  background-color: #333333;
-}
-
 footer {
-	padding: 10px;
-  
-  color: #F1F1F1;
-  
+  padding: 10px;
+
+  color: var(--background);
+
   font-size: 12px;
-  
-	background-color: #313131;
-	text-align: center;
+
+  background-color: var(--text);
+  text-align: center;
 }
 
-.content {
+main {
   padding: 2vh;
-  
+
   min-height: 100vh;
 }
 
 .description {
-	font-size: 0.8em;
-	
+  font-size: 0.8em;
+
   padding-left: 1em;
-  
-	color: #7f4a00;
+
+  color: #7f4a00;
 }
