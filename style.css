@@ -33,7 +33,7 @@ body {
 
   background: linear-gradient(130deg, var(--primary), var(--text));
 
-  font-family: "Roboto", serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1em;
   color: var(--text);
   line-height: 1.6;
@@ -43,7 +43,7 @@ header {
   margin: 20px 0px 20px 0px;
 
   font-size: 1.5em;
-  font-family: "Consolas", serif;
+  font-family: "Consolas", monospace;
 
   display: flex;
   justify-content: space-around;
