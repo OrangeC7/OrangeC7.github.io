@@ -1,94 +1,153 @@
-@viewport {
-  width: device-width;
-  zoom: 1.0;
+/* General styles */
+:root {
+  --text: #13100d;
+  --background: #fdf1e7;
+  --background-transparent: #fdf1e788;
+
+  --primary: #ff8303;
+  --secondary: #8d501e;
+  --accent: #de8a45;
+
+  --link: #8d501e;
+  --link-hover: var(--primary);
 }
 
-:root {
-  --text: #0f0a06;
-  --background: #faf5f1;
-  --primary: #ff6600;
-  --secondary: #e1ab88;
-  --accent: #dc8f5c;
+/* Container that limits the page width */
+.container {
+  /* Sets the maximum width */
+  max-width: 1500px;
+  /* Centers the container horizontally */
+  margin: 0 auto;
+  /* Adds some padding for small screens */
+  padding: 0 20px;
 }
 
 body {
   padding: 0;
   margin: 0;
 
-  background-color: var(--background);
+  /* background-image: url('background.png');
+  background-size: auto;
+  background-repeat: repeat;
+  background-position: top left; */
 
-  font: normal 18px "Roboto", sans-serif;
+  background: linear-gradient(130deg, var(--primary), var(--text));
+
+  font-family: "Roboto", serif;
+  font-size: 1em;
+  color: var(--text);
+  line-height: 1.6;
 }
 
 header {
-  width: 100vw;
-  padding: 2vw;
+  margin: 20px 0px 20px 0px;
 
-  position: fixed;
+  font-size: 1.5em;
+  font-family: "Consolas", serif;
 
-  color: var(--primary);
-  font-size: 2.5em;
-  font-family: "Consolas", monospace;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
-  background-color: var(--background);
-  border-bottom-width: 1px;
-  border-bottom-color: lightgray;
-  border-bottom-style: solid;
+  background-color: #ffffff00;
+  color: var(--text);
+  /* border-bottom: 2px solid var(--primary); */
+  /* position: sticky; */
+}
 
-  text-align: left;
+header img {
+  margin-top: 2px;
+
+  vertical-align: middle;
 }
 
 .header-navigation {
-  margin: 0;
+  min-width: 378px;
+  margin: 0px;
+  padding: 0;
+
   display: flex;
-
-  list-style-type: none;
-
-  font-size: 0.5em;
-
   flex-direction: row;
+  align-items: center;
+  list-style-type: none;
 }
 
 .header-item {
-  padding: 10px;
+  margin: 0 8px;
 }
 
-a:link {
-  color: #ff8300;
+a {
   text-decoration: none;
-}
+  color: var(--link);
+  font-size: 1em;
 
-a:visited {
-  color: #3f2000;
-  text-decoration: none;
+  vertical-align: middle;
+
+  transition: 0.3s;
 }
 
 a:hover {
-  color: #ff8300;
-  text-decoration: underline;
-}
-
-footer {
-  padding: 10px;
-
-  color: var(--background);
-
-  font-size: 12px;
-
-  background-color: var(--text);
-  text-align: center;
+  /* text-decoration: underline; */
+  color: var(--link-hover);
 }
 
 main {
-  padding: 2vh;
-
   min-height: 100vh;
+
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 15px;
+
+  background: var(--background-transparent);
 }
 
-.description {
-  font-size: 0.8em;
+.column img {
+  width: 100%;
+  height: auto;
+}
 
-  padding-left: 1em;
+footer {
+  max-height: 120px;
 
-  color: #7f4a00;
+  margin: 20px 0px 20px 0px;
+  padding: 20px;
+  border-radius: 15px;
+
+  background-color: var(--text);
+  color: var(--background);
+
+  text-align: center;
+  font-size: 0.7em;
+}
+
+/* Multi-column layout */
+@media (min-width: 769px) {
+  .header-object {
+    padding: 10px;
+    border-radius: 15px;
+
+    background-color: var(--text);
+  }
+
+  main {
+    display: flex;
+    flex-direction: row;
+    grid-gap: 20px;
+  }
+}
+
+/* Small screen layout */
+@media (max-width: 768px) {
+  header {
+    padding: 15px 15px 15px 15px;
+    border-radius: 15px;
+
+    flex-direction: column;
+
+    background-color: var(--text);
+  }
+
+  .header-navigation {
+    /* flex-direction: column; */
+  }
 }
