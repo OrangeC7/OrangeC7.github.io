@@ -70,6 +70,7 @@ header img {
 
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   list-style-type: none;
 }
@@ -88,6 +89,16 @@ header img {
   text-decoration: none;
 }
 
+a {
+  text-decoration: none;
+  color: var(--link);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--link-hover);
+}
+
 .header-item a::before {
   content: "//";
 
@@ -103,16 +114,6 @@ header img {
 
 .header-item a:hover::after {
   content: "()";
-}
-
-a {
-  text-decoration: none;
-  color: var(--link);
-}
-
-a:hover {
-  text-decoration: underline;
-  color: var(--link-hover);
 }
 
 main {
@@ -223,6 +224,8 @@ footer a {
   header {
     padding: 15px 15px 15px 15px;
     border-radius: 15px;
+
+    font-size: 1.2em;
 
     flex-direction: column;
 
