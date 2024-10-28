@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <title>Raymarcher demo</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="explain">
+        <p>
+            This is a programming demo that I made to play around with raymarching. See if you can get through the maze!
+        </p>
+        <p>Controls:<br>
+            - WASD to move around<br>
+            - Arrow keys or mouse to look
+        </p>
+    </div>
+    <main>
+        <div class="settings-area">
+            <div class="settings-section">
+                <div class="settings-column">
+                    <p class="settings-title">Raymarcher Settings</p>
+
+                    <div class="setting">
+                        <label for="fov">FOV</label>
+                        <input type="range" class="range" min="0.52359878" max="6.28318531" value="1.22173048"
+                            step="0.01745329" id="fov" /><span id="fovNum">1.22173048</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="rayAmount">Rays to trace</label>
+                        <input type="range" class="range" min="10" max="1000" value="30" step="1" id="rayAmount" /><span
+                            id="rayAmountNum">30</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="jiggle">Angle randomness</label>
+                        <input type="range" class="range" min="0" max="0.5" value="0.024" step="0.001"
+                            id="jiggle" /><span id="jiggleNum">0.024</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="fogginess">Ray walk randomness</label>
+                        <input type="range" class="range" min="0" max="1" value="0" step="0.001" id="fogginess" /><span
+                            id="fogginessNum">0</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="maxPersistenceTime">Visual persistence</label>
+                        <input type="range" class="range" min="1" max="10000" value="62" step="1"
+                            id="maxPersistenceTime" /><span id="maxPersistenceTimeNum">62</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="epsilonMagnitude">Epsilon magnitude</label>
+                        <input type="range" class="range" min="-10" max="10" value="0" step="0.1"
+                            id="epsilonMagnitude" /><span id="epsilonMagnitudeNum">0</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="rectangleTransparencyModifier">Transparency modifier</label>
+                        <input type="range" class="range" min="1" max="100" value="0" step="0.1"
+                            id="rectangleTransparencyModifier" /><span id="rectangleTransparencyModifierNum">0</span>
+                    </div>
+                </div>
+
+                <div class="settings-column">
+                    <p class="settings-title">Display Settings</p>
+
+                    <div class="setting">
+                        <label for="showFPS">FPS</label>
+                        <input type="checkbox" id="showFPS" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="showFOV">FOV</label>
+                        <input type="checkbox" id="showFOV" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="showRays">Rays</label>
+                        <input type="checkbox" id="showRays" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="showResult">Scene</label>
+                        <input type="checkbox" id="showResult" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="showBounds">Scene Bounds</label>
+                        <input type="checkbox" id="showBounds" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="drawScene">Draw scene</label>
+                        <input type="checkbox" id="drawScene" />
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="setting">
+                            <label for="showDistFuncVisual">SDF</label>
+                            <input type="checkbox" id="showDistFuncVisual" />
+                        </div>
+
+                        <div class="setting">
+                            <button id="settingsReset">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-column">
+                    <p class="settings-title">Other</p>
+
+                    <div class="setting">
+                        <label for="useMouseMovement">Toggle mouse input</label>
+                        <input type="checkbox" id="useMouseMovement" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="centerOnPlayer">Follow player</label>
+                        <input type="checkbox" id="centerOnPlayer" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="pauseRender">Pause rendering</label>
+                        <input type="checkbox" id="pauseRender" />
+                    </div>
+
+                    <div class="setting">
+                        <label for="noClip">Enable noclip</label>
+                        <input type="checkbox" id="noClip" />
+                    </div>
+                </div>
+            </div>
+            <div class="settings-section">
+                <div class="settings-column">
+                    <p class="settings-title">Visual Settings</p>
+
+                    <div class="setting">
+                        <label for="pointSize">Point size</label>
+                        <input type="range" class="range" min="0.25" max="15" value="1" step="0.25"
+                            id="pointSize" /><span id="pointSizeNum">0.5</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="colorMode">Color mode</label>
+                        <input type="range" class="range" min="0" max="2" value="1" step="1" id="colorMode" /><span
+                            id="colorModeNum">RGB</span>
+                    </div>
+                </div>
+                <div class="settings-column">
+                    <p class="settings-title">Scene</p>
+
+                    <div class="setting">
+                        <label for="currentScene">Scene Selector</label>
+                        <input type="range" class="range" min="1" max="3" value="1" step="1" id="currentScene" /><span
+                            id="currentSceneNum">1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-tile">
+            <p id="loadingPrompt">loading sketch...</p>
+        </div>
+
+        <script src="scripts/settings.js"></script>
+        <script src="scripts/distanceFunctions.js"></script>
+        <script src="scripts/classes/Player.js"></script>
+        <script src="scripts/classes/Scene.js"></script>
+        <script src="scripts/classes/SceneObject.js"></script>
+        <script src="scripts/classes/CompoundSceneObject.js"></script>
+        <script src="scripts/classes/glyphs.js"></script>
+        <script src="scripts/classes/Circle.js"></script>
+        <script src="scripts/classes/Rectangle.js"></script>
+        <script src="scripts/classes/InvertedRectangle.js"></script>
+        <script src="scripts/sketch.js"></script>
+    </main>
+</body>
+
+</html>

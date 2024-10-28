@@ -1,0 +1,112 @@
+:root {
+    --background: #222;
+    --text: #fff;
+    --tile-background: #111;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    min-height: -webkit-fill-available;
+
+    background-color: var(--background);
+    color: var(--text);
+    font-family: sans-serif;
+
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+canvas {
+    margin: 5px;
+
+    border-radius: 10px;
+}
+
+p {
+    margin: 5px;
+    padding: 10px;
+
+    max-width: 500px;
+
+    background-color: var(--tile-background);
+    border-radius: 10px;
+}
+
+.loading-tile {
+    font-size: 2em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.explain {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-area {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.settings-column {
+    margin: 5px;
+    padding: 5px;
+
+    width: -webkit-fill-available;
+
+    background-color: var(--tile-background);
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-title {
+    text-align: center;
+
+    background-color: var(--background);
+    border-radius: 5px;
+}
+
+.setting {
+    margin: 10px 5px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.range {
+    width: 150px;
+}
+
+label {
+    text-align: center;
+}
+
+canvas {
+    display: block;
+
+    touch-action: none;
+}
