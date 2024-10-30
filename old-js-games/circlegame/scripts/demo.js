@@ -17,15 +17,15 @@ let fCount = 0
 
 function setup() {
 	createCanvas(window.innerWidth, window.innerHeight)
-	window.addEventListener("resize", function(event) {
+	window.addEventListener("resize", function (event) {
 		resizeCanvas(window.innerWidth, window.innerHeight)
-    if (!scaleUp) {
-      midVector = createVector(width / 2, height / 2)
-      dimVector = createVector(width, height)
-    } else {
-      midVector = createVector(width / 4, height / 4)
-      dimVector = createVector(width / 2, height / 2)
-    }
+		if (!scaleUp) {
+			midVector = createVector(width / 2, height / 2)
+			dimVector = createVector(width, height)
+		} else {
+			midVector = createVector(width / 4, height / 4)
+			dimVector = createVector(width / 2, height / 2)
+		}
 	})
 	noSmooth()
 	noStroke()
@@ -36,18 +36,18 @@ function setup() {
 	dimVector = createVector(width, height)
 
 	initSketch()
-  
-  frameRate(60) // Forcing sketch to run at 60 fps, if possible
+
+	frameRate(60) // Forcing sketch to run at 60 fps, if possible
 }
 
 function initSketch() {
 	let w = width
-  let h = height
-  if (scaleUp) {
-    w = w / 2
-    h = h / 2
-  }
-  // For player and controls settings go to options.js. Change to "AIPlayer" to initiate a random network to control the player
+	let h = height
+	if (scaleUp) {
+		w = w / 2
+		h = h / 2
+	}
+	// For player and controls settings go to options.js. Change to "AIPlayer" to initiate a random network to control the player
 	player = new Player(w / 2, h / 2, 20, playerColour)
 
 	// For obstacles settings go to options.js
@@ -55,30 +55,30 @@ function initSketch() {
 }
 
 function draw() {
-  scale(scaleSize)
+	scale(scaleSize)
 	background(45)
-  
+
 	// Update everything
 	// For every obstacle, update
 	if (!paused) {
-    if (fCount % 60 == 0) {
-      obstacles[obstacles.length] = new Obstacle(random(width), random(height), random(minObstacleRadius, maxObstacleRadius), maxObstacleVelocity)
-      points++
-    }
-    
+		if (fCount % 60 == 0) {
+			obstacles[obstacles.length] = new Obstacle(random(width), random(height), random(minObstacleRadius, maxObstacleRadius), maxObstacleVelocity)
+			points++
+		}
+
 		controls() // Check player controls
 		player.update(obstacles) // Update the player
-    
+
 		for (const obstacle of obstacles) {
 			obstacle.update()
 			if (player.overlaps(obstacle)) {
 				obstacles = []
-        initSketch()
-        points = numObstacles
+				initSketch()
+				points = numObstacles
 			}
 		}
-    
-    fCount++
+
+		fCount++
 	}
 
 	// Draw everything
@@ -94,14 +94,14 @@ function draw() {
 	for (let obstacle of nearest) {
 		obstacle.show(warningColour, 1, true)
 	}
-  
-  // Show the current points
-  fill(255, 255, 255)
-  textSize(50)
-  text(points, 10, 60)
+
+	// Show the current points
+	fill(255, 255, 255)
+	textSize(50)
+	text(points, 10, 60)
 
 	pauseAnim() // If paused, show pause animation
-  scaleButton() // Show scale button
+	//   scaleButton() // Show scale button
 }
 
 function controls() {
@@ -118,16 +118,16 @@ function controls() {
 	if (keyIsDown(RIGHT_ARROW) || keyIsDown(right)) {
 		player.move(playerSpeed, 0)
 	}
-  
-  // Allow touch functionality
-  if (mouseIsPressed) {
-    let mpos
-    if (scaleUp) mpos = createVector(mouseX/2, mouseY/2) 
-    else mpos = createVector(mouseX, mouseY)
-    let dir = mpos.sub(player.pos).normalize() // Calculate normal vector in direction of mouse
-    player.move(dir.x * playerSpeed, dir.y * playerSpeed)
-    lastPressFrame = frameCount
-  }
+
+	// Allow touch functionality
+	if (mouseIsPressed) {
+		let mpos
+		if (scaleUp) mpos = createVector(mouseX / 2, mouseY / 2)
+		else mpos = createVector(mouseX, mouseY)
+		let dir = mpos.sub(player.pos).normalize() // Calculate normal vector in direction of mouse
+		player.move(dir.x * playerSpeed, dir.y * playerSpeed)
+		lastPressFrame = frameCount
+	}
 }
 
 // Pause the sketch if key is pressed
@@ -135,37 +135,36 @@ function controls() {
 //  controls checks every frame
 function keyPressed() {
 	switch (key) {
-	case ' ': // Pause
-		paused = !paused
-		pauseFrame = frameCount
-		break
+		case ' ': // Pause
+			paused = !paused
+			pauseFrame = frameCount
+			break
 	}
 }
 
 // Button on bottom right to change scale of Movables for higher pixel density screens
 function mousePressed() {
-  if (mouseIsPressed &&
-      mouseX > width * (scaleButtonSize-1)/scaleButtonSize &&
-      mouseY > height * (scaleButtonSize-1)/scaleButtonSize)
-  {
-    scaleUp = !scaleUp
-    if (scaleUp) {
-      scaleSize = 2
-      
-      // It turns out these were useful after all :P
-      midVector = createVector(width / 4, height / 4)
-      dimVector = createVector(width / 2, height / 2)
-      
-      initSketch()
-    } else {
-      scaleSize = 1
-      
-      // It turns out these were useful after all :P
-      midVector = createVector(width / 2, height / 2)
-      dimVector = createVector(width, height)
-      
-      initSketch()
-    }
-    
-  }
+	if (mouseIsPressed &&
+		mouseX > width * (scaleButtonSize - 1) / scaleButtonSize &&
+		mouseY > height * (scaleButtonSize - 1) / scaleButtonSize) {
+		scaleUp = !scaleUp
+		if (scaleUp) {
+			scaleSize = 2
+
+			// It turns out these were useful after all :P
+			midVector = createVector(width / 4, height / 4)
+			dimVector = createVector(width / 2, height / 2)
+
+			initSketch()
+		} else {
+			scaleSize = 1
+
+			// It turns out these were useful after all :P
+			midVector = createVector(width / 2, height / 2)
+			dimVector = createVector(width, height)
+
+			initSketch()
+		}
+
+	}
 }
