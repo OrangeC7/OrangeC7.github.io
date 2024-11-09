@@ -22,6 +22,10 @@
   padding: 0 20px;
 }
 
+html {
+  min-height: 100vh;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -117,8 +121,6 @@ a:hover {
 }
 
 main {
-  min-height: 100vh;
-
   margin: 0 auto;
   padding: 20px;
   border-radius: 15px;
