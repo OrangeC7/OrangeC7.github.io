@@ -12,12 +12,22 @@ function circleSDF(pos, cPos, r) {
     return createVector(pos.x - cPos.x, pos.y - cPos.y).mag() - r;
 }
 
-// Signed distance function for a rectangle
+// Fast signed distance function for a rectangle
+// This version of the SDF isn't as accurate, but is faster than the proper equation
 function rectangleSDF(pos, x1, y1, x2, y2) {
+    callCounters.rectangleSDF++;
     let dx = Math.max(x1 - pos.x, pos.x - x2);
     let dy = Math.max(y1 - pos.y, pos.y - y2);
-    return createVector(Math.max(0, dx), Math.max(0, dy)).mag() + Math.min(0.0, Math.max(dx, dy));
+    return Math.max(dx, dy);
 }
+
+// // PROPER signed distance function for a rectangle
+// function rectangleSDF(pos, x1, y1, x2, y2) {
+//     callCounters.rectangleSDF++;
+//     let dx = Math.max(x1 - pos.x, pos.x - x2);
+//     let dy = Math.max(y1 - pos.y, pos.y - y2);
+//     return createVector(Math.max(0, dx), Math.max(0, dy)).mag() + Math.min(0.0, Math.max(dx, dy));
+// }
 
 // Unsigned distance function for a rectangle
 function rectangleUDF(pos, x1, y1, x2, y2) {
