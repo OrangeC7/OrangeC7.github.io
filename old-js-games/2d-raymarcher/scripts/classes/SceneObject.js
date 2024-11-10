@@ -35,16 +35,11 @@ class SceneObject {
     }
 
     visualDistFrom(point, scaleMod) {
-        function mapOneToInfinity(x) {
-            return (1 / (1 - x) - 1)
-        }
-
         let result = this.distFrom(point, scaleMod);
         if (this.transparency === 0) {
             return { distance: result, closestColor: this.color }
         } else {
-            return { distance: result + mapOneToInfinity(Math.pow(Math.random(), this.transparencyPower)) * mapOneToInfinity(Math.sqrt(this.transparency)) * settings.rectangleTransparencyModifier, closestColor: this.color }
-            // return result + Math.pow(Math.random(), 5) * this.transparency * settings.rectangleTransparencyModifier;
+            return { distance: result + transparencyDistance(this.transparency, this.transparencyPower), closestColor: this.color }
         }
     }
 

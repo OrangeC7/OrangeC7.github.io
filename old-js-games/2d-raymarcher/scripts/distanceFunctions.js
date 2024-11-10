@@ -44,3 +44,8 @@ function botchedRectangleSDF(pos, x1, y1, x2, y2) {
     // return createVector(Math.max(0, dx), Math.max(0, dy)).mag() + Math.min(0.0, Math.max(dx, dy));
     return createVector(Math.max(0, dx), Math.max(0, dy)).mag();
 }
+
+// Function used to apply transparency to transparent objects
+function transparencyDistance(t, p) {
+    return (1 / (1 - Math.pow(Math.random(), p)) - 1) * (1 / (1 - Math.sqrt(t)) - 1);
+}

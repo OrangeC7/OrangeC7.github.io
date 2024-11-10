@@ -36,16 +36,20 @@ class CompoundSceneObject extends SceneObject {
         let closestColor;
         let trueScale = scaleMod ? p5.Vector.mult(scaleMod, this.scale) : this.scale;
         for (let sceneObject of this.sceneObjects) {
-            let distanceResult = sceneObject.visualDistFrom(createVector(
+            let distanceResult = sceneObject.distFrom(createVector(
                 point.x - this.pos.x - sceneObject.pos.x * (trueScale.x - 1),
                 point.y - this.pos.y - sceneObject.pos.y * (trueScale.y - 1)
             ), trueScale);
-            if (distanceResult.distance < minDistance) {
-                minDistance = distanceResult.distance;
+            if (distanceResult < minDistance) {
+                minDistance = distanceResult;
                 closestColor = sceneObject.color;
             }
         }
-        return { distance: minDistance, closestColor: closestColor };
+        if (this.transparency === 0) {
+            return { distance: minDistance, closestColor: closestColor };
+        } else {
+            return { distance: minDistance + transparencyDistance(this.transparency, this.transparencyPower), closestColor: closestColor }
+        }
     }
 
     update(currentTime) {
