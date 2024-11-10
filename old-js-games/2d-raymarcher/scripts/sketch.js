@@ -333,7 +333,7 @@ function draw() {
 
             maxMarches = 0;
             for (let i = 0; i < result.points.length; i++) {
-                let point = createVector(Math.round(result.points[i].x), Math.round(result.points[i].y));
+                let point = createVector(result.points[i].x, result.points[i].y);
                 let pointLocation = point.x + "," + point.y;
                 recentPixels[pointLocation] = [point, currentMS, result.marches[i], result.colors[i]];
                 maxMarches = result.marches[i] > maxMarches ? result.marches[i] : maxMarches;
