@@ -10,6 +10,12 @@ class Circle extends SceneObject {
         return circleSDF(point, this.pos, this.r);
     }
 
+    update(currentTime) {
+        this.animate(currentTime);
+        this.boundingArea.x = this.pos.x;
+        this.boundingArea.y = this.pos.y;
+    }
+
     closestPointTo(point) {
         return this.normalTo(point).mult(-this.distFrom(point)).add(point);
     }

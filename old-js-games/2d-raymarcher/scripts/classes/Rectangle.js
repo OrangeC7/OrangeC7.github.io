@@ -11,6 +11,15 @@ class Rectangle extends SceneObject {
         else return rectangleSDF(point, this.pos.x, this.pos.y, this.pos.x + this.size.x * scaleMod.x, this.pos.y + this.size.y * scaleMod.y);
     }
 
+    update(currentTime) {
+        this.animate(currentTime);
+        this.pos2 = p5.Vector.add(this.pos, this.size);
+        this.boundingArea.x1 = this.pos.x;
+        this.boundingArea.y1 = this.pos.y;
+        this.boundingArea.x2 = this.pos2.x;
+        this.boundingArea.y2 = this.pos2.y;
+    }
+
     normalTo(point, scaleMod) {
         function cardinalize(v) {
             let magnitude = v.mag()

@@ -2,6 +2,8 @@
 class SceneObject {
     constructor({ x, y, animationTime = 1, animationFunction = (t) => { return this.pos }, boundingArea: boundingArea = { x1: x, y1: y, x2: x, y2: y }, boundingAreaType = 0, transparency = 0, transparencyPower = 1, objectColor = colors.scene }) {
         this.pos = createVector(x, y);
+        this.animationFunction = animationFunction;
+        this.animationTime = animationTime;
         this.parentScene = null;
 
         this.boundingArea = boundingArea;
@@ -54,6 +56,19 @@ class SceneObject {
     collidingWithCircle(pos, radius) {
         if (this.distFrom(pos) < radius) return true;
         else return false;
+    }
+
+    animate(currentTime) {
+        let animationTime = (currentTime % this.animationTime) / this.animationTime;
+        this.pos = this.animationFunction(animationTime);
+    }
+
+    update(currentTime) {
+        this.animate(currentTime);
+        this.boundingArea.x1 = this.pos.x;
+        this.boundingArea.y1 = this.pos.y;
+        this.boundingArea.x2 = this.pos.x;
+        this.boundingArea.y2 = this.pos.y;
     }
 
     normalTo(point) {

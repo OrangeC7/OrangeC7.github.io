@@ -20,13 +20,21 @@ class Scene {
         player.setScene(this);
     }
 
+    respawnPlayer() {
+        this.player.position = this.spawnPosition;
+        this.player.viewDirection = this.spawnViewDirection;
+    }
+
     updatePlayer() {
         this.player.update();
     }
 
-    respawnPlayer() {
-        this.player.position = this.spawnPosition;
-        this.player.viewDirection = this.spawnViewDirection;
+    update() {
+        this.updatePlayer();
+        let currentTime = millis();
+        for (let sceneObject of this.sceneObjects) {
+            sceneObject.update(currentTime);
+        }
     }
 
     visualSDF(point) {

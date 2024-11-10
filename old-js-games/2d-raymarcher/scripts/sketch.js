@@ -300,7 +300,7 @@ function draw() {
 
     let currentScene = getCurrentScene();
 
-    currentScene.updatePlayer();
+    currentScene.update();
 
     let currentMS = millis();
     let renderStageMS = [currentMS];

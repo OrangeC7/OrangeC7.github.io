@@ -48,6 +48,16 @@ class CompoundSceneObject extends SceneObject {
         return { distance: minDistance, closestColor: closestColor };
     }
 
+    update(currentTime) {
+        this.animate(currentTime);
+        let bWidth = this.boundingArea.x2 - this.boundingArea.x1;
+        let bHeight = this.boundingArea.y2 - this.boundingArea.y1;
+        this.boundingArea.x1 = this.pos.x;
+        this.boundingArea.y1 = this.pos.y;
+        this.boundingArea.x2 = this.pos.x + bWidth;
+        this.boundingArea.y2 = this.pos.y + bHeight;
+    }
+
     normalTo(point, scaleMod) {
         let minDistance = Infinity;
         let closestNormal = createVector(0, 0);
