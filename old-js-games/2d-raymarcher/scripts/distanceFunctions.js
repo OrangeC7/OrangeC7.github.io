@@ -14,7 +14,6 @@ function circleSDF(pos, cPos, r) {
 
 // Signed distance function for a rectangle
 function rectangleSDF(pos, x1, y1, x2, y2) {
-    rectangleSDFCalls++;
     let dx = Math.max(x1 - pos.x, pos.x - x2);
     let dy = Math.max(y1 - pos.y, pos.y - y2);
     return createVector(Math.max(0, dx), Math.max(0, dy)).mag() + Math.min(0.0, Math.max(dx, dy));

@@ -183,6 +183,7 @@ function march(
 **/
 
 let player;
+let numScenes = "4";
 let scenes = [];
 
 function getCurrentScene() {
@@ -215,10 +216,12 @@ function setup() {
     sdfViewerCanvas.strokeWeight(2);
     viewedSDFParameters = [createVector(width / 2, height / 2), 200]
 
-    scenes[0] = new Scene({ spawnPosition: createVector(50, 70) });
-    // scene1 = new Scene({ spawnPosition: createVector(-13.070065079509217, 384.4834138515663), sceneObjects: [], spawnViewDirection: createVector(0.8968207967851197, -0.44239400815755064) });
+    scenes[0] = new Scene({ spawnPosition: createVector(156.9521212958934, 224.96050132584796), spawnViewDirection: createVector(-0.923539028865271, 0.38350444868683364) });
+    // scenes[0] = new Scene({ spawnPosition: createVector(774.4570896623698, 764.6695595125663), spawnViewDirection: createVector(-0.7880076028654267, 0.6156655080693444) });
+    // scenes[0] = new Scene({ spawnPosition: createVector(-13.070065079509217, 384.4834138515663), spawnViewDirection: createVector(0.8968207967851197, -0.44239400815755064) });
     scenes[1] = new Scene({ spawnPosition: createVector(0, 0) });
     scenes[2] = new Scene({ spawnPosition: createVector(0, 0) });
+    scenes[3] = new Scene({ spawnPosition: createVector(0, 0) });
 
     let boundaryRectangle = new InvertedRectangle({ x1: -800, y1: -800, x2: 1600, y2: 1600, transparency: 0.9 });
 
@@ -253,9 +256,37 @@ function setup() {
     // Scene 3
     scenes[2].add(boundaryRectangle);
 
-    scenes[2].add(new Circle({ x: 400, y: 300, r: 150, transparency: 0.8, transparencyBorderEffect: 1 }))
+    scenes[2].add(new Circle({ x: 400, y: 300, r: 150, transparency: 0.8 }))
 
     scenes[2].setPlayer(new Player(scenes[2]));
+
+    // Scene 4
+    scenes[3].add(boundaryRectangle);
+
+    scenes[3].add(new Circle({
+        x: 400, y: 300, r: 150, animationTime: 10000, animationFunction: (t) => {
+            return createVector(400, 600 * Math.abs(t % 1 - 0.5));
+        }, transparency: 0.8
+    }))
+
+    scenes[3].add(new Rectangle({
+        x1: -100, y1: 300, x2: 0, y2: 400, animationTime: 10000, animationFunction: (t) => {
+            return createVector(-100, 600 * Math.abs(t % 1 - 0.5));
+        }, transparency: 0.8
+    }))
+
+    scenes[3].add(new Rectangle({
+        x1: 100, y1: 500, x2: 2000, y2: 550, animationTime: 10000, animationFunction: (t) => {
+            return createVector(100 + 2200 * Math.abs(t % 1 - 0.5), 500);
+        }, transparency: 0
+    }))
+    scenes[3].add(new Rectangle({
+        x1: -1900, y1: 500, x2: 0, y2: 550, animationTime: 10000, animationFunction: (t) => {
+            return createVector(-1900 + 2200 * Math.abs(t % 1 - 0.5), 500);
+        }, transparency: 0
+    }))
+
+    scenes[3].setPlayer(new Player(scenes[2]));
 
     document.getElementById("loadingPrompt").remove();
 }
