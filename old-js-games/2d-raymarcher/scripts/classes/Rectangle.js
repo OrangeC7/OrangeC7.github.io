@@ -1,6 +1,6 @@
 class Rectangle extends SceneObject {
-    constructor({ x1, y1, x2, y2, transparency, transparencyPower, objectColor }) {
-        super({ x: x1, y: y1, boundingArea: { x1: x1, y1: y1, x2: x2, y2: y2 }, transparency: transparency, transparencyPower: transparencyPower, objectColor: objectColor });
+    constructor({ x1, y1, x2, y2, transparency, transparencyPower, objectColor, animationTime, animationFunction }) {
+        super({ x: x1, y: y1, boundingArea: { x1, y1, x2, y2 }, transparency, transparencyPower, objectColor, animationTime, animationFunction });
         this.pos2 = createVector(x2, y2);
         this.size = createVector(this.pos2.x - this.pos.x, this.pos2.y - this.pos.y);
         this.d = this.pos.dist(this.pos2);

@@ -1,6 +1,6 @@
 class Circle extends SceneObject {
-    constructor({ x, y, r, transparency, transparencyPower, objectColor }) {
-        super({ x: x, y: y, boundingArea: { x: x, y: y, r: r }, boundingAreaType: 1, transparency: transparency, transparencyPower: transparencyPower, objectColor: objectColor });
+    constructor({ x, y, r, transparency, transparencyPower, objectColor, animationTime, animationFunction }) {
+        super({ x, y, boundingArea: { x, y, r }, boundingAreaType: 1, transparency, transparencyPower, objectColor, animationTime, animationFunction });
         this.r = r;
         this.d = r * 2;
     }

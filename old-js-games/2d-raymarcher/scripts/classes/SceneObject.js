@@ -1,6 +1,6 @@
 // boundingBoxType of 0 is a rectangle, while 1 is an ellipse
 class SceneObject {
-    constructor({ x, y, boundingArea: boundingArea = { x1: x, y1: y, x2: x, y2: y }, boundingAreaType = 0, transparency = 0, transparencyPower = 1, objectColor = colors.scene }) {
+    constructor({ x, y, animationTime = 1, animationFunction = (t) => { return this.pos }, boundingArea: boundingArea = { x1: x, y1: y, x2: x, y2: y }, boundingAreaType = 0, transparency = 0, transparencyPower = 1, objectColor = colors.scene }) {
         this.pos = createVector(x, y);
         this.parentScene = null;
 

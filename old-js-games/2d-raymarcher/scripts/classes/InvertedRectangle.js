@@ -1,6 +1,6 @@
 class InvertedRectangle extends Rectangle {
-    constructor({ x1, y1, x2, y2, transparency, transparencyPower, objectColor }) {
-        super({ x1: x1, y1: y1, x2: x2, y2: y2, transparency: transparency, transparencyPower: transparencyPower, objectColor: objectColor });
+    constructor({ x1, y1, x2, y2, transparency, transparencyPower, objectColor, animationTime, animationFunction }) {
+        super({ x1, y1, x2, y2, transparency, transparencyPower, objectColor, animationTime, animationFunction });
     }
 
     distFrom(point, scaleMod) {

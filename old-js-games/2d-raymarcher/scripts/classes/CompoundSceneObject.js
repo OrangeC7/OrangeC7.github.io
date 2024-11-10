@@ -1,6 +1,6 @@
 class CompoundSceneObject extends SceneObject {
-    constructor(sceneObjects, x, y, xScale = 1, yScale = xScale, objectColor) {
-        super({ x: x, y: y, boundingArea: {}, objectColor: objectColor });
+    constructor({ sceneObjects, x, y, xScale = 1, yScale = xScale, objectColor, transparency }) {
+        super({ x: x, y: y, boundingArea: {}, objectColor: objectColor, transparency });
         this.sceneObjects = sceneObjects;
         this.scale = createVector(xScale, yScale);
         this.pos = createVector(x, y);
@@ -116,15 +116,17 @@ class CompoundSceneObject extends SceneObject {
 
 class TextObject1 extends CompoundSceneObject {
     constructor(x, y, xScale, yScale, objectColor) {
-        super([
-            new Rectangle({ x1: 0, y1: 0, x2: 1, y2: 5 }),
-            new Rectangle({ x1: 1, y1: 2, x2: 2, y2: 3 }),
-            new Rectangle({ x1: 2, y1: 0, x2: 3, y2: 5 }),
-            new Rectangle({ x1: 4, y1: 0, x2: 5, y2: 1 }),
-            new Rectangle({ x1: 4, y1: 2, x2: 5, y2: 5 }),
-            new Rectangle({ x1: 6, y1: 0, x2: 7, y2: 3 }),
-            new Rectangle({ x1: 6, y1: 4, x2: 7, y2: 5 }),
-        ], x, y, xScale, yScale, objectColor);
+        super({
+            sceneObjects: [
+                new Rectangle({ x1: 0, y1: 0, x2: 1, y2: 5 }),
+                new Rectangle({ x1: 1, y1: 2, x2: 2, y2: 3 }),
+                new Rectangle({ x1: 2, y1: 0, x2: 3, y2: 5 }),
+                new Rectangle({ x1: 4, y1: 0, x2: 5, y2: 1 }),
+                new Rectangle({ x1: 4, y1: 2, x2: 5, y2: 5 }),
+                new Rectangle({ x1: 6, y1: 0, x2: 7, y2: 3 }),
+                new Rectangle({ x1: 6, y1: 4, x2: 7, y2: 5 }),
+            ], x: x, y: y, xScale: xScale, yScale: yScale, objectColor: objectColor, transparency: 0.5
+        });
         // this.pos2.x = this.pos.x + 7 * this.scale.x;
         // this.pos2.y = this.pos.y + 5 * this.scale.y;
     }
@@ -136,113 +138,119 @@ class TextObject2 extends CompoundSceneObject {
             colorMode(HSB)
             return color(Math.random() * 100, Math.random() * 100, 100)
         }
-        super([
-            new Glyph12({ x: 0, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph24({ x: 4, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph23({ x: 8, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph16({ x: 12, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph27({ x: 16, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph10({ x: 20, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph29({ x: 24, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph30({ x: 28, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph21({ x: 32, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph10({ x: 36, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph29({ x: 40, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph18({ x: 44, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph24({ x: 48, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph23({ x: 52, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph28({ x: 56, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph34({ x: 0, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph24({ x: 4, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph30({ x: 8, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph32({ x: 16, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph18({ x: 22, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
-            new Glyph23({ x: 26, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
-        ], x, y, xScale, yScale, objectColor);
+        super({
+            sceneObjects: [
+                new Glyph12({ x: 0, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph24({ x: 4, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph23({ x: 8, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph16({ x: 12, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph27({ x: 16, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph10({ x: 20, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph29({ x: 24, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph30({ x: 28, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph21({ x: 32, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph10({ x: 36, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph29({ x: 40, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph18({ x: 44, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph24({ x: 48, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph23({ x: 52, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph28({ x: 56, y: 0, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph34({ x: 0, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph24({ x: 4, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph30({ x: 8, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph32({ x: 16, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph18({ x: 22, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
+                new Glyph23({ x: 26, y: 6, xScale: 1, yScale: 1, objectColor: randomColor() }),
+            ], x: x, y: y, xScale: xScale, yScale: yScale, objectColor: objectColor, transparency: 0.5
+        });
     }
 }
 
 class MazeObject extends CompoundSceneObject {
     constructor({ x, y, xScale, yScale, objectColor }) {
-        super([
-            // Outer walls of maze
-            new Rectangle({ x1: 0, y1: 0, x2: 2, y2: 30, objectColor: objectColor }),
-            new Rectangle({ x1: 4, y1: 0, x2: 30, y2: 2, objectColor: objectColor }),
-            new Rectangle({ x1: 28, y1: 2, x2: 30, y2: 30, objectColor: objectColor }),
-            new Rectangle({ x1: 2, y1: 28, x2: 14, y2: 30, objectColor: objectColor }),
-            new Rectangle({ x1: 16, y1: 28, x2: 28, y2: 30, objectColor: objectColor }),
+        super({
+            sceneObjects: [
+                // Outer walls of maze
+                new Rectangle({ x1: 0, y1: 0, x2: 2, y2: 30, objectColor: objectColor }),
+                new Rectangle({ x1: 4, y1: 0, x2: 30, y2: 2, objectColor: objectColor }),
+                new Rectangle({ x1: 28, y1: 2, x2: 30, y2: 30, objectColor: objectColor }),
+                new Rectangle({ x1: 2, y1: 28, x2: 14, y2: 30, objectColor: objectColor }),
+                new Rectangle({ x1: 16, y1: 28, x2: 28, y2: 30, objectColor: objectColor }),
 
-            // Inner walls of maze
-            new Rectangle({ x1: 4, y1: 4, x2: 18, y2: 6, objectColor: objectColor }),
-            new Rectangle({ x1: 20, y1: 4, x2: 22, y2: 10, objectColor: objectColor }),
-            new Rectangle({ x1: 24, y1: 4, x2: 26, y2: 12, objectColor: objectColor }),
-            new Rectangle({ x1: 4, y1: 6, x2: 6, y2: 10, objectColor: objectColor }),
-            new Rectangle({ x1: 12, y1: 6, x2: 14, y2: 10, objectColor: objectColor }),
-            new Rectangle({ x1: 16, y1: 6, x2: 18, y2: 10, objectColor: objectColor }),
-            new Rectangle({ x1: 8, y1: 8, x2: 12, y2: 10, objectColor: objectColor }),
-            new Rectangle({ x1: 10, y1: 10, x2: 12, y2: 14, objectColor: objectColor }),
-            new Rectangle({ x1: 16, y1: 10, x2: 22, y2: 12, objectColor: objectColor }),
-            new Rectangle({ x1: 4, y1: 12, x2: 6, y2: 26, objectColor: objectColor }),
-            new Rectangle({ x1: 8, y1: 12, x2: 10, y2: 16, objectColor: objectColor }),
-            new Rectangle({ x1: 12, y1: 12, x2: 14, y2: 16, objectColor: objectColor }),
-            new Rectangle({ x1: 24, y1: 12, x2: 28, y2: 14, objectColor: objectColor }),
-            new Rectangle({ x1: 14, y1: 14, x2: 18, y2: 16, objectColor: objectColor }),
-            new Rectangle({ x1: 20, y1: 14, x2: 22, y2: 26, objectColor: objectColor }),
-            new Rectangle({ x1: 6, y1: 16, x2: 8, y2: 24, objectColor: objectColor }),
-            new Rectangle({ x1: 22, y1: 16, x2: 26, y2: 18, objectColor: objectColor }),
-            new Rectangle({ x1: 10, y1: 18, x2: 18, y2: 20, objectColor: objectColor }),
-            new Rectangle({ x1: 2, y1: 20, x2: 4, y2: 22, objectColor: objectColor }),
-            new Rectangle({ x1: 12, y1: 20, x2: 14, y2: 26, objectColor: objectColor }),
-            new Rectangle({ x1: 24, y1: 20, x2: 28, y2: 22, objectColor: objectColor }),
-            new Rectangle({ x1: 8, y1: 22, x2: 10, y2: 24, objectColor: objectColor }),
-            new Rectangle({ x1: 16, y1: 22, x2: 20, y2: 24, objectColor: objectColor }),
-            new Rectangle({ x1: 14, y1: 24, x2: 18, y2: 26, objectColor: objectColor }),
-            new Rectangle({ x1: 22, y1: 24, x2: 26, y2: 26, objectColor: objectColor }),
-            new Rectangle({ x1: 8, y1: 26, x2: 10, y2: 28, objectColor: objectColor }),
-            new Rectangle({ x1: 16, y1: 26, x2: 18, y2: 28, objectColor: objectColor }),
-        ], x, y, xScale, yScale, objectColor);
+                // Inner walls of maze
+                new Rectangle({ x1: 4, y1: 4, x2: 18, y2: 6, objectColor: objectColor }),
+                new Rectangle({ x1: 20, y1: 4, x2: 22, y2: 10, objectColor: objectColor }),
+                new Rectangle({ x1: 24, y1: 4, x2: 26, y2: 12, objectColor: objectColor }),
+                new Rectangle({ x1: 4, y1: 6, x2: 6, y2: 10, objectColor: objectColor }),
+                new Rectangle({ x1: 12, y1: 6, x2: 14, y2: 10, objectColor: objectColor }),
+                new Rectangle({ x1: 16, y1: 6, x2: 18, y2: 10, objectColor: objectColor }),
+                new Rectangle({ x1: 8, y1: 8, x2: 12, y2: 10, objectColor: objectColor }),
+                new Rectangle({ x1: 10, y1: 10, x2: 12, y2: 14, objectColor: objectColor }),
+                new Rectangle({ x1: 16, y1: 10, x2: 22, y2: 12, objectColor: objectColor }),
+                new Rectangle({ x1: 4, y1: 12, x2: 6, y2: 26, objectColor: objectColor }),
+                new Rectangle({ x1: 8, y1: 12, x2: 10, y2: 16, objectColor: objectColor }),
+                new Rectangle({ x1: 12, y1: 12, x2: 14, y2: 16, objectColor: objectColor }),
+                new Rectangle({ x1: 24, y1: 12, x2: 28, y2: 14, objectColor: objectColor }),
+                new Rectangle({ x1: 14, y1: 14, x2: 18, y2: 16, objectColor: objectColor }),
+                new Rectangle({ x1: 20, y1: 14, x2: 22, y2: 26, objectColor: objectColor }),
+                new Rectangle({ x1: 6, y1: 16, x2: 8, y2: 24, objectColor: objectColor }),
+                new Rectangle({ x1: 22, y1: 16, x2: 26, y2: 18, objectColor: objectColor }),
+                new Rectangle({ x1: 10, y1: 18, x2: 18, y2: 20, objectColor: objectColor }),
+                new Rectangle({ x1: 2, y1: 20, x2: 4, y2: 22, objectColor: objectColor }),
+                new Rectangle({ x1: 12, y1: 20, x2: 14, y2: 26, objectColor: objectColor }),
+                new Rectangle({ x1: 24, y1: 20, x2: 28, y2: 22, objectColor: objectColor }),
+                new Rectangle({ x1: 8, y1: 22, x2: 10, y2: 24, objectColor: objectColor }),
+                new Rectangle({ x1: 16, y1: 22, x2: 20, y2: 24, objectColor: objectColor }),
+                new Rectangle({ x1: 14, y1: 24, x2: 18, y2: 26, objectColor: objectColor }),
+                new Rectangle({ x1: 22, y1: 24, x2: 26, y2: 26, objectColor: objectColor }),
+                new Rectangle({ x1: 8, y1: 26, x2: 10, y2: 28, objectColor: objectColor }),
+                new Rectangle({ x1: 16, y1: 26, x2: 18, y2: 28, objectColor: objectColor }),
+            ], x: x, y: y, xScale: xScale, yScale: yScale, objectColor: objectColor
+        });
     }
 }
 
 class GlyphTestObject extends CompoundSceneObject {
     constructor(x, y, xScale, yScale, objectColor) {
-        super([
-            new Glyph10({ x: 0, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph11({ x: 4, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph12({ x: 8, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph13({ x: 12, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph14({ x: 16, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph15({ x: 20, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph16({ x: 24, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph17({ x: 28, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph18({ x: 32, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph19({ x: 36, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph20({ x: 40, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph21({ x: 44, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph22({ x: 48, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph23({ x: 54, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph24({ x: 58, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph25({ x: 62, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph26({ x: 66, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph27({ x: 71, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph28({ x: 75, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph29({ x: 79, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph30({ x: 83, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph31({ x: 87, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph32({ x: 91, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph33({ x: 97, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph34({ x: 101, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph35({ x: 105, y: 0, xScale: 1, yScale: 1 }),
-            new Glyph0({ x: 0, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph1({ x: 4, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph2({ x: 8, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph3({ x: 12, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph4({ x: 16, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph5({ x: 20, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph6({ x: 24, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph7({ x: 28, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph8({ x: 32, y: 6, xScale: 1, yScale: 1 }),
-            new Glyph9({ x: 36, y: 6, xScale: 1, yScale: 1 }),
-        ], x, y, xScale, yScale, objectColor);
+        super({
+            sceneObjects: [
+                new Glyph10({ x: 0, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph11({ x: 4, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph12({ x: 8, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph13({ x: 12, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph14({ x: 16, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph15({ x: 20, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph16({ x: 24, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph17({ x: 28, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph18({ x: 32, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph19({ x: 36, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph20({ x: 40, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph21({ x: 44, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph22({ x: 48, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph23({ x: 54, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph24({ x: 58, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph25({ x: 62, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph26({ x: 66, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph27({ x: 71, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph28({ x: 75, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph29({ x: 79, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph30({ x: 83, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph31({ x: 87, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph32({ x: 91, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph33({ x: 97, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph34({ x: 101, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph35({ x: 105, y: 0, xScale: 1, yScale: 1 }),
+                new Glyph0({ x: 0, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph1({ x: 4, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph2({ x: 8, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph3({ x: 12, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph4({ x: 16, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph5({ x: 20, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph6({ x: 24, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph7({ x: 28, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph8({ x: 32, y: 6, xScale: 1, yScale: 1 }),
+                new Glyph9({ x: 36, y: 6, xScale: 1, yScale: 1 }),
+            ], x: x, y: y, xScale: xScale, yScale: yScale, objectColor: objectColor, transparency: 0.5
+        });
     }
 }
