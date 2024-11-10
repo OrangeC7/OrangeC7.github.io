@@ -120,6 +120,8 @@ function march(
     let y = player.position.y
     let raymarchDirection = player.viewDirection
 
+    let jiggle = settings.fov / settings.rayAmount;
+
     let points = [];
     let pointColors = [];
     let marchNumbers = [];
@@ -127,8 +129,7 @@ function march(
         let rayEnd = createVector(x, y);
         let raySeg = createVector(minStep, minStep)
         let angleDirection = map(i, 0, rayAmount, -fov / 2, fov / 2);
-        let angle = angleDirection;
-        angle = angleDirection + Math.random() * settings.jiggle - settings.jiggle / 2
+        let angle = angleDirection + Math.random() * jiggle - jiggle / 2;
 
         let started = false // this is to ensure the loop runs at least once
         let marches = 0;
@@ -136,7 +137,7 @@ function march(
         while (!started || roughDist(x, y, rayEnd.x, rayEnd.y) > minStep && roughDist(x, y, rayEnd.x, rayEnd.y) < viewDist) {
             started = true;
 
-            if (settings.fogginess > 0) angle += Math.random() * settings.fogginess - settings.fogginess / 2
+            // if (settings.fogginess > 0) angle += Math.random() * settings.fogginess - settings.fogginess / 2
             raySeg = p5.Vector.rotate(raymarchDirection, angle);
 
             let sdfResult = player.parentScene.visualSDF(rayEnd);
@@ -184,6 +185,10 @@ function march(
 let player;
 let scenes = [];
 
+function getCurrentScene() {
+    return scenes[settings.currentScene - 1];
+}
+
 // let recentPoints = [];
 // let allPixels = [];
 let recentPixels = {};
@@ -201,10 +206,6 @@ function setup() {
     cursor("crosshair");
 
     initSettings();
-    document.getElementById("settingsReset").addEventListener('click', () => {
-        initSettings();
-        console.log("Settings reset")
-    });
 
     paintCanvas = createGraphics(width, height, WEBGL);
     paintCanvas.stroke("fff")
@@ -266,7 +267,7 @@ function draw() {
     background(colors.bg);
     frameRate(1000); // make sure the framerate is uncapped
 
-    let currentScene = scenes[settings.currentScene - 1];
+    let currentScene = getCurrentScene();
 
     currentScene.updatePlayer();
 

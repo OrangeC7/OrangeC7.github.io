@@ -15,12 +15,13 @@
 
 <body>
     <div class="explain">
-        <p>
-            This is a programming demo that I made to play around with raymarching. See if you can get through the maze!
-        </p>
         <p>Controls:<br>
             - WASD to move around<br>
+            - SHIFT to sneak<br>
             - Arrow keys or mouse to look
+        </p>
+        <p>
+            This is a programming demo that I made to play around with raymarching. See if you can get through the maze!
         </p>
     </div>
     <main>
@@ -41,17 +42,17 @@
                             id="rayAmountNum">30</span>
                     </div>
 
-                    <div class="setting">
+                    <!-- <div class="setting">
                         <label for="jiggle">Angle randomness</label>
                         <input type="range" class="range" min="0" max="0.5" value="0.024" step="0.001"
                             id="jiggle" /><span id="jiggleNum">0.024</span>
-                    </div>
+                    </div> -->
 
-                    <div class="setting">
+                    <!-- <div class="setting">
                         <label for="fogginess">Ray walk randomness</label>
                         <input type="range" class="range" min="0" max="1" value="0" step="0.001" id="fogginess" /><span
                             id="fogginessNum">0</span>
-                    </div>
+                    </div> -->
 
                     <div class="setting">
                         <label for="maxPersistenceTime">Visual persistence</label>
@@ -63,12 +64,6 @@
                         <label for="epsilonMagnitude">Epsilon magnitude</label>
                         <input type="range" class="range" min="-10" max="10" value="0" step="0.1"
                             id="epsilonMagnitude" /><span id="epsilonMagnitudeNum">0</span>
-                    </div>
-
-                    <div class="setting">
-                        <label for="rectangleTransparencyModifier">Transparency modifier</label>
-                        <input type="range" class="range" min="1" max="100" value="0" step="0.1"
-                            id="rectangleTransparencyModifier" /><span id="rectangleTransparencyModifierNum">0</span>
                     </div>
                 </div>
 
@@ -112,7 +107,7 @@
                         </div>
 
                         <div class="setting">
-                            <button id="settingsReset">Apply</button>
+                            <button type="button" id="settingsReset">Apply</button>
                         </div>
                     </div>
                 </div>
@@ -139,6 +134,19 @@
                         <label for="noClip">Enable noclip</label>
                         <input type="checkbox" id="noClip" />
                     </div>
+
+                    <div class="setting">
+                        <label for="useOldPhysics">Use old physics</label>
+                        <input type="checkbox" id="useOldPhysics" />
+                    </div>
+
+                    <div class="setting">
+                        <button type="button" id="resetSettings">Reset Settings</button>
+                    </div>
+
+                    <div class="setting">
+                        <button type="button" id="resetControls">Reset Controls</button>
+                    </div>
                 </div>
             </div>
             <div class="settings-section">
@@ -164,6 +172,10 @@
                         <label for="currentScene">Scene Selector</label>
                         <input type="range" class="range" min="1" max="3" value="1" step="1" id="currentScene" /><span
                             id="currentSceneNum">1</span>
+                    </div>
+
+                    <div class="setting">
+                        <button type="button" id="logPlayerPosition">Log player position</button>
                     </div>
                 </div>
             </div>
