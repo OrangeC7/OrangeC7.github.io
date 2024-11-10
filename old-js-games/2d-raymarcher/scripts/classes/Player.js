@@ -56,7 +56,7 @@ class Player {
         this.velocity.x += this.acceleration.x;
         this.velocity.y += this.acceleration.y;
 
-        if (!settings.noClip) {
+        if (!settings.noClip && settings.useOldPhysics) {
             for (let sceneObject of this.parentScene.sceneObjects) {
                 if (this.collidingWith(sceneObject, createVector(this.velocity.x, 0))) {
                     let absX = Math.abs(this.velocity.x);
@@ -87,23 +87,28 @@ class Player {
                 if (this.collidingWith(sceneObject, createVector(this.velocity.x, this.velocity.y))) {
                     this.velocity = createVector();
                 }
-                // if (
-                //     sceneObject.collidingWithCircle(
-                //         createVector(this.position.x + this.velocity.x, this.position.y + this.velocity.y),
-                //         playerAttributes.size / 2
-                //     )
-                // ) {
-                //     let normalToCollision = sceneObject.normalTo(this.position)
-                //     this.velocity.add(normalToCollision);
-                // }
             }
         }
 
+        this.velocity.mult(1 / playerAttributes.movementDampening);
+
         this.position.add(this.velocity);
 
-        this.lastMovement = this.position
+        if (!settings.noClip && !settings.useOldPhysics) {
+            for (let sceneObject of this.parentScene.sceneObjects) {
+                if (
+                    sceneObject.collidingWithCircle(
+                        this.position,
+                        playerAttributes.size / 2
+                    )
+                ) {
+                    let normalToCollision = sceneObject.normalTo(this.position)
+                    this.position.add(normalToCollision.mult(-sceneObject.distFrom(this.position) + playerAttributes.size / 2));
+                }
+            }
+        }
 
-        this.velocity.mult(1 / playerAttributes.movementDampening);
+        this.lastMovement = this.position
     }
 
     update() {
@@ -133,6 +138,8 @@ class Player {
 
         noFill();
         ellipse(this.position.x, this.position.y, playerAttributes.size);
+
+        line(this.position.x, this.position.y, this.position.x + this.viewDirection.x * playerAttributes.size / 2, this.position.y + this.viewDirection.y * playerAttributes.size / 2);
 
         // line(this.position.x, this.position.y, this.position.x + this.velocity.x, this.position.y + this.velocity.y)
         pop();
