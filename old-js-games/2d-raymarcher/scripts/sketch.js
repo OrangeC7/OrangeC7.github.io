@@ -201,8 +201,12 @@ function preload() {
     loadedFont = loadFont('assets/FiraCode-Medium.ttf');
 }
 
+let zoomAmount = 2.5;
 function setup() {
     createCanvas(800, 800, WEBGL);
+
+    let zoomSpeed = 1.1;
+    onwheel = (event) => { zoomAmount = event.deltaY > 0 ? zoomAmount / zoomSpeed : zoomAmount * zoomSpeed };
 
     cursor("crosshair");
 
@@ -294,7 +298,8 @@ function setup() {
 let maxMarches = 0;
 let lastCountsReset = 0;
 function draw() {
-    translate(-width / 2, -height / 2, 0);
+    translate(-width / 2 * zoomAmount, -height * zoomAmount / 2, 0);
+    scale(zoomAmount, zoomAmount);
     background(colors.bg);
     frameRate(1000); // make sure the framerate is uncapped
 
@@ -320,7 +325,7 @@ function draw() {
                 settings.fov,
                 settings.rayAmount,
                 Math.pow(2, settings.epsilonMagnitude),
-                settings.centerOnPlayer ? roughDist(0, 0, width / 2, height / 2) : roughDist(0, 0, width, height),
+                settings.centerOnPlayer ? roughDist(0, 0, width / (2 * zoomAmount), height / (2 * zoomAmount)) : roughDist(0, 0, width / zoomAmount, height / zoomAmount),
             );
 
             currentMS = millis();
@@ -337,23 +342,39 @@ function draw() {
 
         currentMS = millis();
         renderStageMS.push(currentMS);
-        for (let pixel in recentPixels) {
-            let age = currentMS - recentPixels[pixel][1];
 
-            if (settings.showResult) {
-                push();
-                stroke(lerpColor(recentPixels[pixel][3], colors.fadeColor, age / settings.maxPersistenceTime));
-                if (settings.pauseRender) stroke(255, 255, 255);
-                strokeWeight(settings.pointSize);
+        loadPixels();
+        if (settings.showResult) {
+            for (let pixel in recentPixels) {
+                let age = currentMS - recentPixels[pixel][1];
 
-                point(recentPixels[pixel][0].x, recentPixels[pixel][0].y);
-                pop();
-            }
+                let screenx = Math.round((recentPixels[pixel][0].x - (settings.centerOnPlayer ? currentScene.player.position.x : 0)) * zoomAmount + width / 2);
+                let screeny = Math.round((recentPixels[pixel][0].y - (settings.centerOnPlayer ? currentScene.player.position.y : 0)) * zoomAmount + height / 2);
+                if (screeny > 0 && screeny < height && screenx > 0 && screenx < width) {
+                    let d = pixelDensity();
+                    for (let i = 0; i < d; i++) {
+                        for (let j = 0; j < d; j++) {
+                            let index = 4 * ((screeny * d + j) * width * d + (screenx * d + i));
+                            // Red
+                            pixels[index] = recentPixels[pixel][3].levels[0];
+                            // Green
+                            pixels[index + 1] = recentPixels[pixel][3].levels[1];
+                            // Blue
+                            pixels[index + 2] = recentPixels[pixel][3].levels[2];
+                            // Alpha
+                            // I'm taking the maximum with 1 because without it there's a weird flickering effect that who knows how it's happening 
+                            if (!settings.pauseRender) pixels[index + 3] = Math.max(255 - (255 * age / settings.maxPersistenceTime), 1);
+                            else pixels[index + 3] = 255;
+                        }
+                    }
+                }
 
-            if (!settings.pauseRender && age >= settings.maxPersistenceTime) {
-                delete recentPixels[pixel];
+                if (!settings.pauseRender && age >= settings.maxPersistenceTime) {
+                    delete recentPixels[pixel];
+                }
             }
         }
+        updatePixels();
 
         if (settings.drawScene) currentScene.drawSceneObjects();
         if (settings.showBounds) {
