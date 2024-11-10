@@ -293,6 +293,8 @@ function setup() {
     scenes[3].setPlayer(new Player(scenes[2]));
 
     document.getElementById("loadingPrompt").remove();
+
+    describe("An interactive javascript game that uses raymarching to display the scene around the player. Use 'W', 'A', 'S' and 'D' to move the player, and the arrow keys or your mouse cursor to look around.");
 }
 
 let maxMarches = 0;
