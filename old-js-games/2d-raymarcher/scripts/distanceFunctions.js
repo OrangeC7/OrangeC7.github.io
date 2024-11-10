@@ -1,11 +1,17 @@
-let circleSDFCalls = 0;
+let callCounters = {
+    rectangleSDF: 0,
+    rectangleUDF: 0,
+    circleSDF: 0,
+    sceneVisualSDF: 0,
+    marchForLoop: 0,
+};
+
 // Distance function from pos to a circle of radius r positioned at cPos
 function circleSDF(pos, cPos, r) {
-    circleSDFCalls++;
+    callCounters.circleSDF++;
     return createVector(pos.x - cPos.x, pos.y - cPos.y).mag() - r;
 }
 
-let rectangleSDFCalls = 0;
 // Signed distance function for a rectangle
 function rectangleSDF(pos, x1, y1, x2, y2) {
     rectangleSDFCalls++;
@@ -16,7 +22,7 @@ function rectangleSDF(pos, x1, y1, x2, y2) {
 
 // Unsigned distance function for a rectangle
 function rectangleUDF(pos, x1, y1, x2, y2) {
-    rectangleSDFCalls++;
+    callCounters.rectangleUDF++;
     let dx = Math.max(x1 - pos.x, pos.x - x2);
     let dy = Math.max(y1 - pos.y, pos.y - y2);
     return createVector(Math.max(0, dx), Math.max(0, dy)).mag();

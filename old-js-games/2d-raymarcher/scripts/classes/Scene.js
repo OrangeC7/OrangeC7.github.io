@@ -30,6 +30,7 @@ class Scene {
     }
 
     visualSDF(point) {
+        callCounters.sceneVisualSDF++;
         let distance = Infinity;
         let closestColor;
         for (let sceneObject of this.sceneObjects) {

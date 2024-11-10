@@ -95,7 +95,6 @@ function viewSDF(sdf, params) {
     text((round(1000 * resultAtMouse) / 1000).toFixed(3), 10, 10);
 }
 
-let marchCount = 0;
 /** Takes in a distance function with its arguments and raymarches from a point in space to the shape.
 distFunction: The distance function to be used
 funcArgs: Any arguments that are to be passed to the function
@@ -126,6 +125,8 @@ function march(
     let pointColors = [];
     let marchNumbers = [];
     for (let i = 0; i <= rayAmount; i++) {
+        callCounters.marchForLoop++;
+
         let rayEnd = createVector(x, y);
         let raySeg = createVector(minStep, minStep)
         let angleDirection = map(i, 0, rayAmount, -fov / 2, fov / 2);
@@ -157,7 +158,6 @@ function march(
             if (raySeg.mag() <= epsilon) break;
             marches++;
         }
-        marchCount += marches;
 
         if (drawRays) {
             let rayEnd = createVector(x, y);
@@ -380,15 +380,15 @@ function draw() {
         text(`Render stages: ${renderStages}`, FPSPosition.x, FPSPosition.y + rowLocation++ * FPSInterval);
 
         text(`Max march count: ${maxMarches}`, FPSPosition.x, FPSPosition.y + rowLocation++ * FPSInterval);
-        text(`Calls for rect distance: ${rectangleSDFCalls}`, FPSPosition.x, FPSPosition.y + rowLocation++ * FPSInterval);
-        text(`Calls for circ distance: ${circleSDFCalls}`, FPSPosition.x, FPSPosition.y + rowLocation++ * FPSInterval);
-        text(`Times marched: ${marchCount}`, FPSPosition.x, FPSPosition.y + rowLocation++ * FPSInterval);
+        for (let callCounter in callCounters) {
+            text(`Calls to ${callCounter}: ${callCounters[callCounter]}`, FPSPosition.x, FPSPosition.y + rowLocation++ * FPSInterval);
+        }
         pop();
     }
     if (millis() >= lastCountsReset + 1000) {
-        rectangleSDFCalls = 0;
-        circleSDFCalls = 0;
-        marchCount = 0;
+        for (let key in callCounters) {
+            callCounters[key] = 0;
+        }
         lastCountsReset = millis();
     }
 }
