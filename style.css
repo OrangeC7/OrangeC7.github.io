@@ -174,7 +174,7 @@ h2 {
   justify-content: center;
 }
 
-i {
+.describe {
   color: var(--secondary);
 }
 
