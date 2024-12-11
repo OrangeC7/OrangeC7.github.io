@@ -202,8 +202,10 @@ function preload() {
 }
 
 let zoomAmount = 2.5;
+let cWidth = 800;
+let cHeight = 800;
 function setup() {
-    createCanvas(800, 800, WEBGL);
+    createCanvas(cWidth, cHeight, WEBGL);
 
     let zoomSpeed = 1.1;
     onwheel = (event) => { zoomAmount = event.deltaY > 0 ? zoomAmount / zoomSpeed : zoomAmount * zoomSpeed };
@@ -227,7 +229,7 @@ function setup() {
     scenes[2] = new Scene({ spawnPosition: createVector(0, 0) });
     scenes[3] = new Scene({ spawnPosition: createVector(0, 0) });
 
-    let boundaryRectangle = new InvertedRectangle({ x1: -800, y1: -800, x2: 1600, y2: 1600, transparency: 0.9 });
+    let boundaryRectangle = new InvertedRectangle({ x1: -cWidth, y1: -cHeight, x2: cWidth * 2, y2: cHeight * 2, transparency: 0.9 });
 
     // Scene 1
     scenes[0].add(boundaryRectangle);
@@ -240,8 +242,8 @@ function setup() {
     scenes[0].add(new Circle({ x: 225, y: 740, r: 30 }));
     scenes[0].add(new Circle({ x: 350, y: 775, r: 15 }));
 
-    scenes[0].add(new Rectangle({ x1: -800, y1: 390, x2: 300, y2: 410 }));
-    scenes[0].add(new Rectangle({ x1: 600, y1: 390, x2: 1600, y2: 410 }));
+    scenes[0].add(new Rectangle({ x1: -cWidth, y1: 390, x2: 300, y2: 410 }));
+    scenes[0].add(new Rectangle({ x1: 600, y1: 390, x2: cWidth * 2, y2: 410 }));
 
     scenes[0].add(new MazeObject({ x: 300, y: 300, xScale: 10, yScale: 10, objectColor: color("#fff") }));
     scenes[0].add(new TextObject1(1000, -600, 10, 10));
@@ -401,9 +403,10 @@ function draw() {
         let FPSSize = 20;
         let FPSPadding = 0.1 * FPSSize;
         let FPSInterval = FPSSize + FPSPadding;
-        let FPSPosition = createVector(width - FPSPadding, FPSPadding);
+        let FPSPosition = createVector(width * zoomAmount - FPSPadding, FPSPadding);
 
         push();
+        scale(1 / zoomAmount, 1 / zoomAmount);
         noStroke();
         fill(colors.fps);
         textFont(loadedFont, FPSSize);

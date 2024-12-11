@@ -12,6 +12,8 @@ class Scene {
     }
 
     remove(sceneObjectIndex) {
+
+        this.sceneObjects[sceneObjectIndex].setScene(null);
         this.sceneObjects.splice(sceneObjectIndex, 1);
     }
 
