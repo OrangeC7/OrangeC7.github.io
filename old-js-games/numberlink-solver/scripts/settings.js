@@ -10,7 +10,7 @@ let boardGridWidth = 10
 let boardGridHeight = 10
 
 let debug = false
-let testing = true
+let testing = false
 
 let turnOffWinScreen = false
 let autoNextPuzzle = false
