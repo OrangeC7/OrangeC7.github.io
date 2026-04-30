@@ -531,7 +531,7 @@ class Board {
           stroke(0)
           fill(0, 255, 255)
         }
-        textSize(txtSize * sizeFactor)
+        textSize(settings.txtSize * sizeFactor)
         text(
           i + 1,
           (x * this.gridSpacing) + this.gridSpacing / 2,
@@ -540,7 +540,7 @@ class Board {
         pop()
       }
       push()
-      strokeWeight(linkRadius * sizeFactor)
+      strokeWeight(settings.linkRadius * sizeFactor)
       stroke("#0000cc")
       if (currentLink.path.length !== 0) {
         let p1 = this.coordsAtIndex(currentLink.path[0])

@@ -1,4 +1,6 @@
-let linkBoard = new Board(boardGridWidth, boardGridHeight, 0, 0, boardVisualWidth)
+let linkBoard = new Board(settings.boardGridWidth, settings.boardGridHeight, 0, 0, settings.boardVisualWidth)
+
+let showWinScreen = false
 
 function printDebugToScreen() {
     let debugString = ""
@@ -22,10 +24,10 @@ function testTouching() {
 
     let pairs = []
 
-    for (let i = 0; i < Math.max(boardGridWidth * boardGridWidth, boardGridHeight * boardGridHeight); i++) {
+    for (let i = 0; i < Math.max(settings.boardGridWidth * settings.boardGridWidth, settings.boardGridHeight * settings.boardGridHeight); i++) {
         pairs.push([
-            floor(random(0, boardGridWidth * boardGridWidth)),
-            floor(random(0, boardGridWidth * boardGridWidth))
+            floor(random(0, settings.boardGridWidth * settings.boardGridWidth)),
+            floor(random(0, settings.boardGridWidth * settings.boardGridWidth))
         ])
     }
 
@@ -82,7 +84,7 @@ function puzzleGeneratorBenchmark() {
         noLoop()
     }
 
-    linkBoard = new Board(benchmarkPuzzleSize, benchmarkPuzzleSize, 0, 0, boardVisualWidth)
+    linkBoard = new Board(benchmarkPuzzleSize, benchmarkPuzzleSize, 0, 0, settings.boardVisualWidth)
 
     let statsArray = []
     for (let i = 0; i < benchmarkIterations; i++) {
@@ -110,6 +112,7 @@ let paused = false
 
 function resetPuzzle(showSolution) {
     showWinScreen = false
+    linkBoard = new Board(settings.boardGridWidth, settings.boardGridHeight, 0, 0, settings.boardVisualWidth)
     linkBoard.keepWandering()
     if (!showSolution) linkBoard.clearLinks()
 }
@@ -122,6 +125,8 @@ function visualizeResetPuzzle() {
 }
 
 function setup() {
+    initSettings()
+
     createCanvas(canvasSize, canvasSize)
 
     // linkBoard.addLink(linkBoard.getGridIndex(4, 2), linkBoard.getGridIndex(2, 5))
@@ -130,18 +135,18 @@ function setup() {
     // linkBoard.addLink(linkBoard.getGridIndex(3, 0), linkBoard.getGridIndex(4, 6))
     // linkBoard.addLink(linkBoard.getGridIndex(5, 1), linkBoard.getGridIndex(3, 3))
 
-    // linkBoard = new WikipediaExample(0, 0, boardVisualWidth)
+    // linkBoard = new WikipediaExample(0, 0, settings.boardVisualWidth)
 
-    // linkBoard = new FlowExample(0, 0, boardVisualWidth)
+    // linkBoard = new FlowExample(0, 0, settings.boardVisualWidth)
 
-    // linkBoard = new Board(5, 5, 0, 0, boardVisualWidth)
+    // linkBoard = new Board(5, 5, 0, 0, settings.boardVisualWidth)
     // linkBoard.addLinkByCoords(0, 0, 2, 1)
     // linkBoard.addLinkByCoords(1, 1, 4, 2)
     // linkBoard.addLinkByCoords(4, 3, 3, 4)
     // linkBoard.addLinkByCoords(0, 3, 2, 4)
     // linkBoard.addLinkByCoords(3, 1, 1, 3)
 
-    // linkBoard = new Board(7, 7, 0, 0, boardVisualWidth)
+    // linkBoard = new Board(7, 7, 0, 0, settings.boardVisualWidth)
     // linkBoard.keepWandering()
     // linkBoard.clearLinks()
 
@@ -155,7 +160,7 @@ function setup() {
     . . . . . . . .
     **/
     // https://forum.ukpuzzles.org/viewtopic.php?p=147#p147
-    // linkBoard = new Board(8, 7, 0, 0, boardVisualWidth)
+    // linkBoard = new Board(8, 7, 0, 0, settings.boardVisualWidth)
     // linkBoard.addLinkByCoords(1, 2, 6, 2)
     // linkBoard.addLinkByCoords(4, 3, 6, 5)
     // linkBoard.addLinkByCoords(6, 3, 1, 5)
@@ -164,7 +169,7 @@ function setup() {
 
     // https://sysid.github.io/numberlink-puzzle/
 
-    // linkBoard = new Board(11, 11, 0, 0, boardVisualWidth)
+    // linkBoard = new Board(11, 11, 0, 0, settings.boardVisualWidth)
     // linkBoard.addLinkByCoords(0, 0, 1, 5)
     // linkBoard.addLinkByCoords(10, 0, 3, 8)
     // linkBoard.addLinkByCoords(2, 1, 6, 4)
@@ -187,10 +192,14 @@ function setup() {
     linkBoard.addLink(12, 30)
     linkBoard.addLink(1, 19)
     linkBoard.addLink(23, 7)
+
+    document.getElementById("loadingPrompt").remove();
 }
 
 function draw() {
     background(0)
+
+    linkBoard.changeVisualWidth(settings.boardVisualWidth)
 
     if (testing) {
         unitTest()
@@ -198,8 +207,8 @@ function draw() {
     }
 
     if (linkBoard.allLinksComplete() && linkBoard.allSpacesFilled()) {
-        showWinScreen = !turnOffWinScreen
-        if (autoNextPuzzle) setTimeout(resetPuzzle, 1000)
+        showWinScreen = !settings.turnOffWinScreen
+        if (settings.autoNextPuzzle) setTimeout(resetPuzzle, 1000)
     } else {
         showWinScreen = false
     }
@@ -215,7 +224,7 @@ function draw() {
         linkBoard.pruneUnfinishedLinks()
     }
 
-    if (!paused) for (let i = 0; i < wanderSpeedFactor; i++) if (isWandering) {
+    if (!paused) for (let i = 0; i < settings.wanderSpeedFactor; i++) if (isWandering) {
         isWandering = !linkBoard.wanderTest(4)
         numWanders++
         if (!isWandering) {

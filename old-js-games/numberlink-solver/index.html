@@ -9,11 +9,95 @@
 
 </head>
 
+<!--// boardGridWidth: 10,
+        // boardGridHeight: 10,
+        // autoNextPuzzle: false,-->
+
 <body>
-    <script src="scripts/functions.js"></script>
-    <script src="scripts/settings.js"></script>
-    <script src="scripts/Board.js"></script>
-    <script src="scripts/sketch.js"></script>
+    <div class="explain">
+        <p>Controls:<br>
+            - SPACE or ENTER to generate a new puzzle<br>
+            - V to generate a puzzle and visualize puzzle generation<br>
+            - S to generate a new puzzle and show the proposed solution<br>
+            - C to clear all links<br>
+            - E to print board code to console to save for later
+        </p>
+        <p>
+            This is my JavaScript implementation of a Numberlink puzzle generator. Try it out!
+        </p>
+    </div>
+    <main>
+        <div class="settings-area">
+            <div class="settings-section">
+                <div class="settings-column">
+                    <p class="settings-title">Visual Settings</p>
+
+                    <div class="setting">
+                        <label for="linkRadius">Link thickness</label>
+                        <input type="range" class="range" min="1" max="10" value="5"
+                            step="0.5" id="linkRadius" /><span id="linkRadiusNum">5</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="txtSize">Text size</label>
+                        <input type="range" class="range" min="20" max="50" value="40" step="1" id="txtSize" /><span
+                            id="txtSizeNum">40</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="boardVisualWidth">Board width on screen</label>
+                        <input type="range" class="range" min="0" max="550" value="550" step="1" id="boardVisualWidth" /><span
+                            id="boardVisualWidthNum">550</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="turnOffWinScreen">Don't display win screen</label>
+                        <input type="checkbox" id="turnOffWinScreen"/>
+                    </div>
+                </div>
+                <div class="settings-column">
+                    <p class="settings-title">Puzzle Settings</p>
+
+                    <div class="setting">
+                        <label for="boardGridWidth">Number of squares wide</label>
+                        <input type="range" class="range" min="2" max="12" value="10"
+                            step="1" id="boardGridWidth" /><span id="boardGridWidthNum">10</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="boardGridHeight">Number of squares tall</label>
+                        <input type="range" class="range" min="2" max="12" value="10" step="1" id="boardGridHeight" /><span
+                            id="boardGridHeightNum">10</span>
+                    </div>
+
+                    <div class="setting">
+                        <label for="autoNextPuzzle">Automatically generate new puzzle</label>
+                        <input type="checkbox" id="autoNextPuzzle"/>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-section"></div>
+                <div class="settings-column">
+                    <p class="settings-title">Generator settings</p>
+
+                    <div class="setting">
+                        <label for="wanderSpeedFactor">Wander speed</label>
+                        <input type="range" class="range" min="1" max="1000" value="200"
+                            step="10" id="wanderSpeedFactor" /><span id="wanderSpeedFactorNum">200</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-tile">
+            <p id="loadingPrompt">loading sketch...</p>
+        </div>
+
+        <script src="scripts/functions.js"></script>
+        <script src="scripts/settings.js"></script>
+        <script src="scripts/Board.js"></script>
+        <script src="scripts/sketch.js"></script>
+    </main>
 </body>
 
 </html>
