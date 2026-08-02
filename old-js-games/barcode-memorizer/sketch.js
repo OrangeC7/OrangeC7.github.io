@@ -183,16 +183,16 @@ class barcodeRenderer {
 
         if (txt === "Stop pattern") {
             txt = "STOP"
-            code = ""
+            codeblock = ""
         } else if (txt === "Start Code A") {
             txt = "STARTA"
-            code = ""
+            codeblock = ""
         } else if (txt === "Start Code B") {
             txt = "STARTB"
-            code = ""
+            codeblock = ""
         } else if (txt === "Start Code C") {
             txt = "STARTC"
-            code = ""
+            codeblock = ""
         }
 
         text(`${hideData ? "?" : txt}\n${hideData ? "?" : codeblock}`, x + this.width * 5.5, this.y + this.height + 20)
@@ -251,6 +251,8 @@ class barcodeRenderer {
 let bc
 let d = 0
 
+let barcodeLength = 1
+
 let userInput = []
 let userText = []
 
@@ -294,7 +296,7 @@ function randomizeBarcode(maxLength) {
 function keyPressed() {
     switch (key) {
         case "Insert":
-            randomizeBarcode(5)
+            randomizeBarcode(barcodeLength)
             break
         case "Delete":
             bc.highlightSections = !bc.highlightSections
@@ -304,6 +306,12 @@ function keyPressed() {
             break
         case "PageDown":
             if (bc.startcode < 105) bc.startcode++
+            break
+        case "ArrowUp":
+            if (barcodeLength < 12) barcodeLength++
+            break
+        case "ArrowDown":
+            if (barcodeLength > 1) barcodeLength--
             break
         case "End":
             hideAnswer = !hideAnswer
