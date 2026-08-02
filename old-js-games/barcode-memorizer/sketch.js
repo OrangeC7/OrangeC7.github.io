@@ -288,7 +288,9 @@ function randomizeBarcode(maxLength) {
     bc.data = []
     // for (let i = 0; i === 0 || Math.random() > 0.1 && bc.data.length < maxLength; i++) {
     for (let i = 0; bc.data.length < maxLength; i++) {
-        let d = Math.floor(rangedRandom(0, 95))
+        let maxNum = bc.startcode === 105 ? 99 : 95
+        console.log(maxNum)
+        let d = Math.floor(rangedRandom(0, maxNum))
         bc.data.push(d)
     }
 }
