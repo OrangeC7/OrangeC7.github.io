@@ -110,6 +110,284 @@ const encoding = [
     ['Stop pattern', 'Stop pattern', 'Stop pattern', [2, 3, 3, 1, 1, 1, 2]]
 ]
 
+const double_digits = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+]
+
+const all_characters = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+]
+
+const single_digits = [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+]
+
+const uppercase_letters = [
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+]
+
+const lowercase_letters = [
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+]
+
 const CODEA = 0
 const CODEB = 1
 const CODEC = 2
@@ -252,6 +530,16 @@ let bc
 let d = 0
 
 let barcodeLength = 1
+let randomCharacterMode = 0
+let randomModeList = [
+    "All CODE C numbers",
+    "Digits only",
+    "Uppercase letters",
+    "Digits and uppercase letters",
+    "Lowercase letters",
+    "Uppercase and lowercase numbers",
+    "All characters",
+]
 
 let userInput = []
 let userText = []
@@ -277,6 +565,12 @@ function draw() {
     text(`${userText.join()}\n${userInput.join("")}`, 44, 300)
     pop()
 
+    push()
+    let randomModeText = randomModeList[randomCharacterMode]
+    textAlign(RIGHT, BOTTOM)
+    text(`Random Mode: ${randomModeText}`, width - 20, height - 20)
+    pop()
+
     noLoop()
 }
 
@@ -286,12 +580,34 @@ function rangedRandom(min, max) {
 
 function randomizeBarcode(maxLength) {
     bc.data = []
+    let characterPool = []
+    switch (randomCharacterMode) {
+        case 0:
+            characterPool = double_digits
+            break
+        case 1:
+            characterPool = single_digits
+            break
+        case 2:
+            characterPool = uppercase_letters
+            break
+        case 3:
+            characterPool = single_digits.concat(uppercase_letters)
+            break
+        case 4:
+            characterPool = lowercase_letters
+            break
+        case 5:
+            characterPool = lowercase_letters.concat(uppercase_letters)
+            break
+        case 6:
+            characterPool = all_characters
+            break
+    }
     // for (let i = 0; i === 0 || Math.random() > 0.1 && bc.data.length < maxLength; i++) {
     for (let i = 0; bc.data.length < maxLength; i++) {
-        let maxNum = bc.startcode === 105 ? 99 : 95
-        console.log(maxNum)
-        let d = Math.floor(rangedRandom(0, maxNum))
-        bc.data.push(d)
+        let index = Math.floor(rangedRandom(0, characterPool.length - 1))
+        bc.data.push(characterPool[index])
     }
 }
 
@@ -325,6 +641,10 @@ function keyPressed() {
         case "Enter":
             userText.push(userInput.join(""))
             userInput = []
+            break
+        case "Home":
+            randomCharacterMode++
+            randomCharacterMode %= randomModeList.length
             break
         case "Shift":
         case "Alt":
