@@ -1,0 +1,360 @@
+const CLASS_SECTION = "settings-section"
+const CLASS_COLUMN = "settings-column"
+const CLASS_SETTING = "setting"
+const CLASS_TITLE = "settings-title"
+
+const SETTINGS_MENU = [
+    {
+        type: CLASS_SECTION,
+        contents: [
+            {
+                type: CLASS_COLUMN,
+                title: "Application Mode",
+                contents: [
+                    {
+                        type: CLASS_SECTION,
+                        contents: [
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "radio",
+                                name: "appmode",
+                                id: "appmodeRead",
+                                label: "Read",
+                                default: true,
+                            },
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "radio",
+                                name: "appmode",
+                                id: "appmodeRecall",
+                                label: "Recall",
+                                default: false,
+                            },
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "radio",
+                                name: "appmode",
+                                id: "appmodeEdit",
+                                label: "Edit",
+                                default: false,
+                            },
+                        ]
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        type: CLASS_SECTION,
+        contents: [
+            {
+                type: CLASS_COLUMN,
+                title: "Diplay Settings",
+                contents: [
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "checkbox",
+                        id: "highlightSections",
+                        label: "Highlight barcode sections",
+                        default: true,
+                    },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "checkbox",
+                        id: "showAnswer",
+                        label: "Show answer",
+                        default: false,
+                    },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "button",
+                        id: "randomize",
+                        label: "Randomize barcode"
+                    },
+                ]
+            },
+            {
+                type: CLASS_COLUMN,
+                title: "Randomizer Settings",
+                contents: [
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "slider",
+                        id: "randomizerLength",
+                        label: "Barcode length when randomized",
+                        min: 1,
+                        max: 12,
+                        default: 1,
+                        step: 1,
+                    },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "dropdown",
+                        id: "characterSet",
+                        label: "Character Set",
+                        options: [
+                            { value: "double_digits", label: "All CODE C numbers" },
+                            { value: "single_digits", label: "Digits" },
+                            { value: "uppercase_letters", label: "Uppercase letters" },
+                            { value: "lowercase_letters", label: "Lowercase letters" },
+                            { value: "all_symbols", label: "All symbols", selected: true },
+                        ]
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        type: CLASS_SECTION,
+        contents: [
+            {
+                type: CLASS_COLUMN,
+                title: "Barcode Settings",
+                contents: [
+                    {
+                        type: CLASS_SECTION,
+                        contents: [
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "dropdown",
+                                id: "symbology",
+                                label: "Symbology (Barcode Type)",
+                                options: [
+                                    { value: "code128", label: "Code 128", selected: true },
+                                    { value: "upc", label: "UPC-12" },
+                                    { value: "ean", label: "EAN (UPC-13)" },
+                                    { value: "codabar", label: "Codabar" },
+                                    { value: "usps", label: "USPS Intelligent Mail" },
+                                    { value: "upu", label: "UPU S18 4-State" },
+                                    { value: "rm4scc", label: "Royal Mail RM4SCC" },
+                                    { value: "kix", label: "KIX" },
+                                ]
+                            },
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "dropdown",
+                                id: "code128startcode",
+                                label: "Code 128 start code",
+                                options: [
+                                    { value: "103", label: "Code A", selected: true },
+                                    { value: "104", label: "Code B" },
+                                    { value: "105", label: "Code C" },
+                                ]
+                            },
+                        ]
+                    },
+                ]
+            },
+        ]
+    },
+]
+
+function createMenuElement(parent, elementType, elementClass) {
+    let newElement = document.createElement(elementType)
+    if (elementClass) newElement.setAttribute("class", elementClass)
+    parent.append(newElement)
+    return newElement
+}
+
+function createMenuSection(parent) {
+    return createMenuElement(parent, "div", CLASS_SECTION)
+}
+
+function createMenuTitle(parent, title) {
+    let titleElement = createMenuElement(parent, "p", CLASS_TITLE)
+    titleElement.textContent = title
+    return titleElement
+}
+
+function createMenuLabel(parent, id, label) {
+    let newLabel = createMenuElement(parent, "label")
+    newLabel.setAttribute("for", id)
+    newLabel.textContent = label
+    return newLabel
+}
+
+function createMenuColumn(parent, title) {
+    let newColumn = createMenuElement(parent, "div", CLASS_COLUMN)
+    createMenuTitle(newColumn, title)
+    return newColumn
+}
+
+let settingsArea = document.getElementsByClassName("settings-area")[0]
+
+let settings = {
+    clearMenu: function () {
+        let elements = settingsArea.children
+        let len = elements.length
+        for (let i = 0; i < len; i++) {
+            elements[0].remove()
+        }
+    },
+    initialize: function () {
+        this.clearMenu()
+        recursiveInitialize(settingsArea, SETTINGS_MENU, 5)
+    },
+    handlers: {},
+    radioGroups: {},
+}
+
+class MenuSetting {
+    constructor(parent, id, label = id, createLabel = true) {
+        this.settingDiv = createMenuElement(parent, "div", CLASS_SETTING)
+        this.id = id
+        this.label = label
+        if (createLabel) createMenuLabel(this.settingDiv, id, label)
+        settings.handlers[id] = this
+    }
+}
+
+class SettingsButton extends MenuSetting {
+    constructor(parent, id, label) {
+        super(parent, id, label, false)
+        this.element = createMenuElement(this.settingDiv, "button")
+        this.element.setAttribute("id", id)
+        this.element.textContent = label
+    }
+    setBehavior(f) {
+        this.element.onclick = f
+    }
+}
+
+class SettingsCheckbox extends MenuSetting {
+    constructor(parent, id, isChecked = false, label) {
+        super(parent, id, label)
+        this.element = createMenuElement(this.settingDiv, "input")
+        this.element.setAttribute("type", "checkbox")
+        this.element.setAttribute("id", id)
+        if (isChecked) this.element.setAttribute("checked", isChecked)
+        settings[id] = isChecked
+        this.element.oninput = function () {
+            settings[id] = this.checked
+        }
+    }
+    flip() {
+        if (this.element.checked) this.element.removeAttribute("checked")
+        else this.element.setAttribute("checked", true)
+        this.element.oninput()
+    }
+    check() {
+        this.element.setAttribute("checked", true)
+        this.element.oninput()
+    }
+    uncheck() {
+        this.element.removeAttribute("checked")
+        this.element.oninput()
+    }
+}
+
+class SettingsRadio extends SettingsCheckbox {
+    constructor(parent, id, name, isChecked = false, label) {
+        super(parent, id, isChecked, label)
+        this.element.setAttribute("type", "radio")
+        this.element.setAttribute("name", name)
+        if (!settings.radioGroups[name]) settings.radioGroups[name] = {}
+        settings.radioGroups[name][id] = this
+        this.element.oninput = function () {
+            for (let radioButton in settings.radioGroups[name]) {
+                settings[settings.radioGroups[name][radioButton].id] = false
+            }
+            settings[id] = this.checked
+        }
+    }
+}
+
+class SettingsSlider extends MenuSetting {
+    constructor(parent, id, min, max, value, step, label) {
+        super(parent, id, label)
+        this.sliderSection = createMenuSection(this.settingDiv)
+        let numberDisplay = createMenuElement(this.sliderSection, "span")
+        numberDisplay.innerText = value
+        this.numberDisplay = numberDisplay
+        this.element = createMenuElement(this.sliderSection, "input", "range")
+        this.element.setAttribute("type", "range")
+        this.element.setAttribute("id", id)
+        this.element.setAttribute("min", min)
+        this.element.setAttribute("max", max)
+        this.element.setAttribute("value", value)
+        this.element.setAttribute("step", step)
+        settings[id] = value
+        this.element.oninput = function () {
+            numberDisplay.innerText = this.value
+            settings[id] = parseInt(this.value)
+        }
+    }
+}
+
+class SettingsDropdown extends MenuSetting {
+    constructor(parent, id, options, label) {
+        super(parent, id, label)
+        this.element = createMenuElement(this.settingDiv, "select")
+        this.element.setAttribute("id", id)
+        this.dropdownOptions = []
+        for (let option of options) {
+            let newOption = createMenuElement(this.element, "option")
+            newOption.setAttribute("value", option.value)
+            if (option.selected) {
+                newOption.setAttribute("selected", "selected")
+                settings[id] = option.value
+            }
+            newOption.textContent = option.label
+            this.dropdownOptions.push(newOption)
+        }
+        this.element.oninput = function () {
+            settings[id] = this.value
+        }
+    }
+}
+
+function recursiveInitialize(parent, settingsElements, depth) {
+    if (depth <= 0) {
+        console.error("Settings menu is deeper than expected! Returning early.", parent, settingsElements, depth)
+        return
+    }
+    if (!settingsElements) {
+        console.error(`Section contents is not defined`, parent, depth)
+        return
+    }
+
+    for (let element of settingsElements) {
+        if (!element.type) {
+            console.error(`Settings menu element does not have a 'type' property`, element)
+            return
+        }
+        switch (element.type) {
+            case CLASS_SECTION:
+                let newSection = createMenuSection(parent)
+                recursiveInitialize(newSection, element.contents, depth - 1)
+                break
+            case CLASS_COLUMN:
+                let newColumn = createMenuColumn(parent, element.title)
+                recursiveInitialize(newColumn, element.contents, depth - 1)
+                break
+            case CLASS_SETTING:
+                switch (element.inputType) {
+                    case "button":
+                        let newButton = new SettingsButton(parent, element.id, element.label)
+                        break
+                    case "checkbox":
+                        let newCheckbox = new SettingsCheckbox(parent, element.id, element.default, element.label)
+                        break
+                    case "radio":
+                        let newRadioButton = new SettingsRadio(parent, element.id, element.name, element.default, element.label)
+                        break
+                    case "slider":
+                        let newSlider = new SettingsSlider(parent, element.id, element.min, element.max, element.default, element.step, element.label)
+                        break
+                    case "dropdown":
+                        let newDropdown = new SettingsDropdown(parent, element.id, element.options, element.label)
+                        break
+                }
+                break
+            case CLASS_TITLE:
+                let newTitle = createMenuTitle(parent)
+                break
+            default:
+                console.error(`Unrecognized settings menu element ${element.type}`, element)
+                break
+        }
+    }
+}
