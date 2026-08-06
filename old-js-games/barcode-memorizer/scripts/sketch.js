@@ -61,7 +61,13 @@ function draw() {
     bc.highlightSections = settings.highlightSections
     bc.startcode = parseInt(settings.code128startcode)
 
-    bc.render(userText, !settings.showAnswer)
+    if (settings.appmodeEdit) {
+        for (let entry of userText) entry = parseInt(entry)
+        bc.data = userText
+        bc.render([], false)
+    } else if (settings.appmodeRead) {
+        bc.render(userText, !settings.showAnswer)
+    }
 
     push()
     textAlign(LEFT, TOP)
