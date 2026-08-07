@@ -62,9 +62,11 @@ function draw() {
     bc.startcode = parseInt(settings.code128startcode)
 
     if (settings.appmodeEdit) {
-        for (let entry of userText) entry = parseInt(entry)
-        bc.data = userText
-        bc.render([], false)
+        bc.data = []
+        for (let i = 0; i < userText.length; i++) {
+            bc.data[i] = parseInt(userText[i])
+        }
+        bc.render([], !settings.showAnswer)
     } else if (settings.appmodeRead) {
         bc.render(userText, !settings.showAnswer)
     }
