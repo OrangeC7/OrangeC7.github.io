@@ -727,5 +727,5 @@ const CODE_128_LOWERCASE_LETTERS = [
 const CODEA = 0
 const CODEB = 1
 const CODEC = 2
-const HVAL = "hex"
+const CHKSM = "SUM"
 

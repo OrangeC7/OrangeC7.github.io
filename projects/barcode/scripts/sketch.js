@@ -91,8 +91,10 @@ function randomizeBarcode() {
     resetChoices()
 }
 
+let scores = []
+
 function setup() {
-    createCanvas(1000, 400);
+    createCanvas(1000, 500);
     textAlign(CENTER, TOP)
     textSize(20)
 
@@ -100,11 +102,16 @@ function setup() {
     settings.handlers.randomize.setBehaviour(() => {
         randomizeBarcode()
     })
+    settings.handlers.resetScore.setBehaviour(() => {
+        scores = []
+    })
 
     let buttonWidth = 100
     let buttonHeight = 40
     let buttonSpacing = 20
     for (let i = 0; i < MAX_MULTIPLE_CHOICES; i++) buttons.push(new Button(44 + buttonWidth * i + buttonSpacing * i, 300, buttonWidth, buttonHeight, 0, (buttonObject) => {
+        if (bc.data[userText.length] === buttonObject.characterCode) scores.push(1)
+        else scores.push(0)
         userText.push(buttonObject.characterCode)
         resetChoices()
     }))
@@ -120,6 +127,8 @@ function draw() {
 
     bc.highlightSections = settings.highlightSections
     bc.startcode = parseInt(settings.code128startcode)
+    bc.height = settings.barcodeHeight
+    bc.barWidth = settings.barWidth
 
     if (settings.appmodeMultChoice) {
         if (lastAppmode !== "appmodeMultChoice") userText = []
@@ -133,6 +142,12 @@ function draw() {
             buttons[i].render(mouseX, mouseY, mouseIsPressed, settings.code128startcode === "103" ? CODE_128_CODE_A : settings.code128startcode === "104" ? CODE_128_CODE_B : CODE_128_CODE_C)
             buttons[i].update(mouseX, mouseY, mouseIsPressed)
         }
+
+        push()
+        textAlign(RIGHT, BOTTOM)
+        fill(0)
+        text(`Score: ${Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 1000) / 10}% correct`, width - 44, height - 44)
+        pop()
 
         lastAppmode = "appmodeMultChoice"
         return

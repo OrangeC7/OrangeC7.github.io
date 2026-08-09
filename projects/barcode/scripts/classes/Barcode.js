@@ -2,7 +2,7 @@ class Barcode {
     constructor(x = 44, y = 0, w = 5, h = 200) {
         this.x = x
         this.y = y
-        this.width = w
+        this.barWidth = w
         this.height = h
 
         this.startcode = 103
@@ -31,13 +31,13 @@ class Barcode {
         let characterWidths = ENCODING[d][3]
         let black = true
         let dx = 0
-        x *= this.width
+        x *= this.barWidth
         x += this.x
         for (let w of characterWidths) {
             if (black) fill(dCol)
             else fill(lCol)
-            let screenW = w * this.width
-            rect(x + dx, this.y, screenW, this.y + this.height)
+            let screenW = w * this.barWidth
+            rect(x + dx, this.y, screenW, this.height)
             black = !black
             dx += screenW
         }
@@ -61,7 +61,7 @@ class Barcode {
         } else if (code === CODEC) {
             txt = ENCODING[d][2]
             codeblock = "C"
-        } else if (code === HVAL) {
+        } else if (code === CHKSM) {
             txt = d.toString(16)
         } else txt = d
 
@@ -79,7 +79,7 @@ class Barcode {
             codeblock = ""
         }
 
-        text(`${hideData ? "?" : txt}\n${hideData ? "?" : codeblock}`, x + this.width * 5.5, this.y + this.height + 20)
+        text(`${hideData ? "?" : txt}\n${hideData ? "?" : codeblock}`, x + this.barWidth * 5.5, this.y + this.height + 20)
 
         pop()
     }
@@ -125,7 +125,7 @@ class Barcode {
         }
 
         cs %= 103
-        this.renderCharacter(pos * 11, cs, HVAL, this.highlightSections ? this.checkColor : undefined, this.highlightSections ? this.checkColorB : undefined)
+        this.renderCharacter(pos * 11, cs, CHKSM, this.highlightSections ? this.checkColor : undefined, this.highlightSections ? this.checkColorB : undefined)
         pos++
 
         this.renderCharacter(pos * 11, ENCODING.length - 1, CODEB, this.highlightSections ? this.stopColor : undefined, this.highlightSections ? this.stopColorB : undefined)

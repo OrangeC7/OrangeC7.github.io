@@ -81,6 +81,12 @@ const SETTINGS_MENU = [
                                 default: 4,
                                 step: 1,
                             },
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "button",
+                                id: "resetScore",
+                                label: "Reset score"
+                            },
                         ]
                     },
                 ]
@@ -114,8 +120,28 @@ const SETTINGS_MENU = [
         contents: [
             {
                 type: CLASS_COLUMN,
-                title: "Diplay Settings",
+                title: "Display Settings",
                 contents: [
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "slider",
+                        id: "barcodeHeight",
+                        label: "Barcode height",
+                        min: 1,
+                        max: 200,
+                        default: 200,
+                        step: 1,
+                    },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "slider",
+                        id: "barWidth",
+                        label: "Barcode bar width",
+                        min: 1,
+                        max: 20,
+                        default: 5,
+                        step: 1,
+                    },
                     {
                         type: CLASS_SETTING,
                         inputType: "checkbox",
@@ -209,12 +235,12 @@ const SETTINGS_MENU = [
                                 options: [
                                     { value: "code128", label: "Code 128", selected: true },
                                     { value: "upc", label: "UPC-12" },
-                                    { value: "ean", label: "EAN (UPC-13)" },
+                                    { value: "ean", label: "EAN-13" },
                                     { value: "codabar", label: "Codabar" },
-                                    { value: "usps", label: "USPS Intelligent Mail" },
-                                    { value: "upu", label: "UPU S18 4-State" },
-                                    { value: "rm4scc", label: "Royal Mail CBC" },
-                                    { value: "postbar", label: "PostBar" },
+                                    { value: "usps", label: "USPS IMb" },
+                                    { value: "upu", label: "UPU S18" },
+                                    { value: "rm4scc", label: "Royal Mail RM4SCC" },
+                                    { value: "postbar", label: "Canada Post PostBar" },
                                 ]
                             },
                             {
