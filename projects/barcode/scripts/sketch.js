@@ -5,47 +5,24 @@ let userInput = []
 let userText = []
 let lastAppmode = "appmodeRead"
 
-function rangedRandom(min, max) {
-    return Math.floor(Math.random() * (max + 1 - min) + min)
+function randomizeBarcode() {
+    bc.randomizeData()
+    userInput = []
+    userText = []
+    resetChoices()
 }
 
-function randomCharacter(excludedCharacters = []) {
-    let characterPool = []
-    switch (settings.characterSet) {
-        case "double_digits":
-            characterPool = CODE_128_DOUBLE_DIGITS
-            break
-        case "single_digits":
-            characterPool = CODE_128_SINGLE_DIGITS
-            break
-        case "uppercase_letters":
-            characterPool = CODE_128_UPPERCASE_LETTERS
-            break
-        case 3: // used to be single digits + uppercase letters
-            characterPool = CODE_128_SINGLE_DIGITS.concat(CODE_128_UPPERCASE_LETTERS)
-            break
-        case "lowercase_letters":
-            characterPool = CODE_128_LOWERCASE_LETTERS
-            break
-        case 5: // used to be lowercase + uppercase
-            characterPool = CODE_128_LOWERCASE_LETTERS.concat(CODE_128_UPPERCASE_LETTERS)
-            break
-        case "all_symbols":
-            characterPool = CODE_128_ALL_SYMBOLS
-            break
-    }
-    characterPool = characterPool.filter((el) => !excludedCharacters.includes(el)) //https://stackoverflow.com/a/19957433
-    return characterPool[rangedRandom(0, characterPool.length - 1)]
-}
-
+let waitingForNextBarcode = false
 function resetChoices() {
     if (userText.length === bc.data.length) {
         if (settings.autoRandomize) {
+            waitingForNextBarcode = true
             let wasSectionsHighlighted = settings.highlightSections
             if (!wasSectionsHighlighted) settings.handlers.highlightSections.check()
             setTimeout(() => {
                 randomizeBarcode()
                 if (!wasSectionsHighlighted) settings.handlers.highlightSections.uncheck()
+                waitingForNextBarcode = false
             }, settings.autoRandomizeTime)
         }
         return
@@ -57,7 +34,7 @@ function resetChoices() {
         if (i === correctButton) {
             buttons[i].setCharacter(bc.data[userText.length])
         } else {
-            let newCharacter = randomCharacter(usedCharacters)
+            let newCharacter = bc.randomCharacter(usedCharacters)
             buttons[i].setCharacter(newCharacter)
             usedCharacters.push(newCharacter)
         }
@@ -79,25 +56,6 @@ function testSetChoices(iters = 1000) {
     return true
 }
 
-function randomizeBarcode() {
-    let newData = []
-    do {
-        newData = []
-        for (let i = 0; newData.length < settings.randomizerLength; i++) {
-            newData.push(randomCharacter())
-        }
-        console.log(newData)
-    } while (JSON.stringify(bc.data) === JSON.stringify(newData))
-    bc.data = newData
-    userInput = []
-    userText = []
-    // for (let i = 0; i === 0 || Math.random() > 0.1 && bc.data.length < maxLength; i++) {
-    for (let i = 0; bc.data.length < settings.randomizerLength; i++) {
-        bc.data.push(randomCharacter())
-    }
-    resetChoices()
-}
-
 let scores = []
 
 function setup() {
@@ -117,10 +75,12 @@ function setup() {
     let buttonHeight = 40
     let buttonSpacing = 20
     for (let i = 0; i < MAX_MULTIPLE_CHOICES; i++) buttons.push(new Button(44 + buttonWidth * i + buttonSpacing * i, 300, buttonWidth, buttonHeight, 0, (buttonObject) => {
-        if (bc.data[userText.length] === buttonObject.characterCode) scores.push(1)
-        else scores.push(0)
-        userText.push(buttonObject.characterCode)
-        resetChoices()
+        if (!waitingForNextBarcode) {
+            if (bc.data[userText.length] === buttonObject.characterCode) scores.push(1)
+            else scores.push(0)
+            userText.push(buttonObject.characterCode)
+            resetChoices()
+        }
     }))
 
     bc = new Barcode(44, 10)
@@ -131,6 +91,8 @@ function draw() {
     background(120);
 
     settings.update()
+
+    bc.setSymbology(settings.symbology, randomizeBarcode)
 
     bc.highlightSections = settings.highlightSections
     bc.startcode = parseInt(settings.code128startcode)
@@ -146,7 +108,16 @@ function draw() {
         bc.render(userText, !settings.showAnswer, true)
 
         for (let i = 0; i < settings.numChoices; i++) {
-            buttons[i].render(mouseX, mouseY, mouseIsPressed, settings.code128startcode === "103" ? CODE_128_CODE_A : settings.code128startcode === "104" ? CODE_128_CODE_B : CODE_128_CODE_C)
+            let buttonCharacterTable = []
+            switch (settings.symbology) {
+                case CODE_128:
+                    buttonCharacterTable = settings.code128startcode === "103" ? CODE_128_CODE_A_ENCODING : settings.code128startcode === "104" ? CODE_128_CODE_B_ENCODING : CODE_128_CODE_C_ENCODING
+                    break
+                case RM4SCC:
+                    buttonCharacterTable = RM4SCC_ENCODING
+                    break
+            }
+            buttons[i].render(mouseX, mouseY, mouseIsPressed, buttonCharacterTable)
             buttons[i].update(mouseX, mouseY, mouseIsPressed)
         }
 

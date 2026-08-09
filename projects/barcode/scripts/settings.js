@@ -203,7 +203,7 @@ const SETTINGS_MENU = [
                     {
                         type: CLASS_SETTING,
                         inputType: "dropdown",
-                        id: "characterSet",
+                        id: "code128CharacterSet",
                         label: "Character Set",
                         options: [
                             { value: "double_digits", label: "All CODE C numbers" },
@@ -211,7 +211,28 @@ const SETTINGS_MENU = [
                             { value: "uppercase_letters", label: "Uppercase letters" },
                             { value: "lowercase_letters", label: "Lowercase letters" },
                             { value: "all_symbols", label: "All symbols", selected: true },
-                        ]
+                        ],
+                        conditions: {
+                            showByDefault: false,
+                            conditionID: "symbology",
+                            conditionValue: CODE_128
+                        },
+                    },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "dropdown",
+                        id: "rm4sccCharacterSet",
+                        label: "Character Set",
+                        options: [
+                            { value: "rm4scc_digits", label: "Numbers" },
+                            { value: "rm4scc_letters", label: "Letters" },
+                            { value: "all_symbols", label: "Numbers and letters", selected: true },
+                        ],
+                        conditions: {
+                            showByDefault: false,
+                            conditionID: "symbology",
+                            conditionValue: RM4SCC
+                        },
                     },
                 ]
             },
@@ -233,13 +254,13 @@ const SETTINGS_MENU = [
                                 id: "symbology",
                                 label: "Symbology (Barcode Type)",
                                 options: [
-                                    { value: "code128", label: "Code 128", selected: true },
+                                    { value: CODE_128, label: "Code 128", selected: true },
                                     { value: "upc", label: "UPC-12" },
                                     { value: "ean", label: "EAN-13" },
                                     { value: "codabar", label: "Codabar" },
                                     { value: "usps", label: "USPS IMb" },
                                     { value: "upu", label: "UPU S18" },
-                                    { value: "rm4scc", label: "Royal Mail RM4SCC" },
+                                    { value: RM4SCC, label: "Royal Mail RM4SCC" },
                                     { value: "postbar", label: "Canada Post PostBar" },
                                 ]
                             },
@@ -265,6 +286,32 @@ const SETTINGS_MENU = [
             },
         ]
     },
+    // {
+    //     type: CLASS_SECTION,
+    //     contents: [
+    //         {
+    //             type: CLASS_COLUMN,
+    //             title: "Dev settings",
+    //             contents: [
+    //                 {
+    //                     type: CLASS_SECTION,
+    //                     contents: [
+    //                         {
+    //                             type: CLASS_SETTING,
+    //                             inputType: "slider",
+    //                             id: "testNumber",
+    //                             label: "number",
+    //                             min: 0,
+    //                             max: 10,
+    //                             default: 2,
+    //                             step: 0.01,
+    //                         },
+    //                     ]
+    //                 },
+    //             ]
+    //         },
+    //     ]
+    // },
 ]
 
 function createMenuElement(parent, elementType, elementClass) {
@@ -314,7 +361,7 @@ let settings = {
     conditions: [],
     update: function () {
         function hideSetting(settingDiv) {
-            if (!settingDiv.attributes.getNamedItem("style")) settingDiv.setAttribute("style", "visibility:hidden; max-height:0;") // https://stackoverflow.com/a/59702383
+            if (!settingDiv.attributes.getNamedItem("style")) settingDiv.setAttribute("style", "visibility:hidden; max-height:0; margin:0;") // https://stackoverflow.com/a/59702383
         }
         function showSetting(settingDiv) {
             if (settingDiv.attributes.getNamedItem("style")) settingDiv.removeAttribute("style")
@@ -423,6 +470,10 @@ class SettingsSlider extends MenuSetting {
             numberDisplay.innerText = this.value
             settings[id] = parseInt(this.value)
         }
+    }
+    setValue(n) {
+        this.element.value = n
+        this.element.oninput()
     }
 }
 
