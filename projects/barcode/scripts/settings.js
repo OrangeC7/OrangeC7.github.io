@@ -2,6 +2,9 @@ const CLASS_SECTION = "settings-section"
 const CLASS_COLUMN = "settings-column"
 const CLASS_SETTING = "setting"
 const CLASS_TITLE = "settings-title"
+const SETTINGS_LABEL = "settings-label"
+
+const MAX_MULTIPLE_CHOICES = 5
 
 const SETTINGS_MENU = [
     {
@@ -26,6 +29,14 @@ const SETTINGS_MENU = [
                                 type: CLASS_SETTING,
                                 inputType: "radio",
                                 name: "appmode",
+                                id: "appmodeMultChoice",
+                                label: "Multiple Choice",
+                                default: false,
+                            },
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "radio",
+                                name: "appmode",
                                 id: "appmodeRecall",
                                 label: "Recall",
                                 default: false,
@@ -39,6 +50,60 @@ const SETTINGS_MENU = [
                                 default: false,
                             },
                         ]
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        type: CLASS_SECTION,
+        id: "multipleChoiceModeSettings",
+        conditions: {
+            showByDefault: false,
+            conditionID: "appmodeMultChoice",
+            conditionValue: true
+        },
+        contents: [
+            {
+                type: CLASS_COLUMN,
+                title: "Multiple Choice Mode Settings",
+                contents: [
+                    {
+                        type: CLASS_SECTION,
+                        contents: [
+                            {
+                                type: CLASS_SETTING,
+                                inputType: "slider",
+                                id: "numChoices",
+                                label: "Number of choices available",
+                                min: 2,
+                                max: MAX_MULTIPLE_CHOICES,
+                                default: 4,
+                                step: 1,
+                            },
+                        ]
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        type: CLASS_SECTION,
+        id: "recallModeSettings",
+        conditions: {
+            showByDefault: false,
+            conditionID: "appmodeRecall",
+            conditionValue: true
+        },
+        contents: [
+            {
+                type: CLASS_COLUMN,
+                title: "Recall Mode Settings",
+                contents: [
+                    {
+                        type: SETTINGS_LABEL,
+                        id: "recallModeWIPLabel",
+                        label: "Nothing here yet"
                     },
                 ]
             },
@@ -69,7 +134,7 @@ const SETTINGS_MENU = [
                         type: CLASS_SETTING,
                         inputType: "button",
                         id: "randomize",
-                        label: "Randomize barcode"
+                        label: "Next barcode"
                     },
                 ]
             },
@@ -86,6 +151,28 @@ const SETTINGS_MENU = [
                         max: 12,
                         default: 1,
                         step: 1,
+                    },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "checkbox",
+                        id: "autoRandomize",
+                        label: "Generate barcode when done",
+                        default: true,
+                    },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: "slider",
+                        id: "autoRandomizeTime",
+                        label: "Next barcode timer (in milliseconds)",
+                        min: 250,
+                        max: 5000,
+                        default: 2000,
+                        step: 50,
+                        conditions: {
+                            showByDefault: false,
+                            conditionID: "autoRandomize",
+                            conditionValue: true
+                        },
                     },
                     {
                         type: CLASS_SETTING,
@@ -126,8 +213,8 @@ const SETTINGS_MENU = [
                                     { value: "codabar", label: "Codabar" },
                                     { value: "usps", label: "USPS Intelligent Mail" },
                                     { value: "upu", label: "UPU S18 4-State" },
-                                    { value: "rm4scc", label: "Royal Mail RM4SCC" },
-                                    { value: "kix", label: "KIX" },
+                                    { value: "rm4scc", label: "Royal Mail CBC" },
+                                    { value: "postbar", label: "PostBar" },
                                 ]
                             },
                             {
@@ -139,7 +226,12 @@ const SETTINGS_MENU = [
                                     { value: "103", label: "Code A", selected: true },
                                     { value: "104", label: "Code B" },
                                     { value: "105", label: "Code C" },
-                                ]
+                                ],
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "code128"
+                                }
                             },
                         ]
                     },
@@ -193,6 +285,31 @@ let settings = {
         this.clearMenu()
         recursiveInitialize(settingsArea, SETTINGS_MENU, 5)
     },
+    conditions: [],
+    update: function () {
+        function hideSetting(settingDiv) {
+            if (!settingDiv.attributes.getNamedItem("style")) settingDiv.setAttribute("style", "visibility:hidden; max-height:0;") // https://stackoverflow.com/a/59702383
+        }
+        function showSetting(settingDiv) {
+            if (settingDiv.attributes.getNamedItem("style")) settingDiv.removeAttribute("style")
+        }
+        for (let conditional of this.conditions) {
+            let settingDiv = this.handlers[conditional.id].settingDiv
+            if (settings[conditional.conditionID] === conditional.conditionValue) {
+                if (conditional.showByDefault) {
+                    hideSetting(settingDiv)
+                } else {
+                    showSetting(settingDiv)
+                }
+            } else {
+                if (conditional.showByDefault) {
+                    showSetting(settingDiv)
+                } else {
+                    hideSetting(settingDiv)
+                }
+            }
+        }
+    },
     handlers: {},
     radioGroups: {},
 }
@@ -214,7 +331,7 @@ class SettingsButton extends MenuSetting {
         this.element.setAttribute("id", id)
         this.element.textContent = label
     }
-    setBehavior(f) {
+    setBehaviour(f) {
         this.element.onclick = f
     }
 }
@@ -232,16 +349,15 @@ class SettingsCheckbox extends MenuSetting {
         }
     }
     flip() {
-        if (this.element.checked) this.element.removeAttribute("checked")
-        else this.element.setAttribute("checked", true)
+        this.element.checked = !this.element.checked
         this.element.oninput()
     }
     check() {
-        this.element.setAttribute("checked", true)
+        this.element.checked = true
         this.element.oninput()
     }
     uncheck() {
-        this.element.removeAttribute("checked")
+        this.element.checked = false
         this.element.oninput()
     }
 }
@@ -324,37 +440,70 @@ function recursiveInitialize(parent, settingsElements, depth) {
         switch (element.type) {
             case CLASS_SECTION:
                 let newSection = createMenuSection(parent)
+                if (element.id) {
+                    newSection.setAttribute("id", element.id)
+                    settings.handlers[element.id] = {
+                        settingDiv: newSection
+                    }
+                }
                 recursiveInitialize(newSection, element.contents, depth - 1)
                 break
             case CLASS_COLUMN:
                 let newColumn = createMenuColumn(parent, element.title)
+                if (element.id) {
+                    newColumn.setAttribute("id", element.id)
+                    settings.handlers[element.id] = {
+                        settingDiv: newColumn
+                    }
+                }
                 recursiveInitialize(newColumn, element.contents, depth - 1)
                 break
             case CLASS_SETTING:
                 switch (element.inputType) {
                     case "button":
-                        let newButton = new SettingsButton(parent, element.id, element.label)
+                        new SettingsButton(parent, element.id, element.label)
                         break
                     case "checkbox":
-                        let newCheckbox = new SettingsCheckbox(parent, element.id, element.default, element.label)
+                        new SettingsCheckbox(parent, element.id, element.default, element.label)
                         break
                     case "radio":
-                        let newRadioButton = new SettingsRadio(parent, element.id, element.name, element.default, element.label)
+                        new SettingsRadio(parent, element.id, element.name, element.default, element.label)
                         break
                     case "slider":
-                        let newSlider = new SettingsSlider(parent, element.id, element.min, element.max, element.default, element.step, element.label)
+                        new SettingsSlider(parent, element.id, element.min, element.max, element.default, element.step, element.label)
                         break
                     case "dropdown":
-                        let newDropdown = new SettingsDropdown(parent, element.id, element.options, element.label)
+                        new SettingsDropdown(parent, element.id, element.options, element.label)
                         break
                 }
                 break
             case CLASS_TITLE:
-                let newTitle = createMenuTitle(parent)
+                let newTitle = createMenuTitle(parent, element.title)
+                if (element.id) {
+                    newTitle.setAttribute("id", element.id)
+                    settings.handlers[element.id] = {
+                        settingDiv: newTitle
+                    }
+                }
+                break
+            case SETTINGS_LABEL:
+                createMenuLabel(parent, element.id, element.label)
                 break
             default:
                 console.error(`Unrecognized settings menu element ${element.type}`, element)
                 break
+        }
+        if (element.conditions) {
+            if (!element.id) {
+                console.error(`${element} does not have an id associated with it, but contains a 'conditions' property! It cannot be conditionally shown or hidden without one.`, element.conditions)
+            }
+            settings.conditions.push({
+                id: element.id,
+                handler: settings.handlers[element.id],
+                conditionID: element.conditions.conditionID,
+                conditionValue: element.conditions.conditionValue,
+                showByDefault: element.conditions.showByDefault
+            })
         }
     }
 }

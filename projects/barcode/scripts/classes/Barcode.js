@@ -1,4 +1,4 @@
-class BarcodeRenderer {
+class Barcode {
     constructor(x = 44, y = 0, w = 5, h = 200) {
         this.x = x
         this.y = y
@@ -7,6 +7,7 @@ class BarcodeRenderer {
 
         this.startcode = 103
         this.data = []
+        this.codeblocks = []
 
         this.highlightSections = true
 
@@ -102,7 +103,7 @@ class BarcodeRenderer {
                 colorB = this.dataColorB
                 dataMask = hideData
             } else {
-                if (compareText[pos - 1] === ENCODING[d][code]) {
+                if (parseInt(compareText[pos - 1]) === d) {
                     colorW = color(0, 255, 0)
                     colorB = color(0, 25, 25)
                 } else {
