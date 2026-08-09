@@ -258,6 +258,7 @@ const SETTINGS_MENU = [
                                     { value: "upc", label: "UPC-12" },
                                     { value: "ean", label: "EAN-13" },
                                     { value: "codabar", label: "Codabar" },
+                                    { value: "msi", label: "MSI" },
                                     { value: "usps", label: "USPS IMb" },
                                     { value: "upu", label: "UPU S18" },
                                     { value: RM4SCC, label: "Royal Mail RM4SCC" },
@@ -279,6 +280,118 @@ const SETTINGS_MENU = [
                                     conditionID: "symbology",
                                     conditionValue: "code128"
                                 }
+                            },
+                            {
+                                type: CLASS_SECTION,
+                                id: "upcWIP",
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "upc"
+                                },
+                                contents: [
+                                    {
+                                        type: CLASS_COLUMN,
+                                        title: "Nothing here yet!",
+                                        contents: []
+                                    },
+                                ]
+                            },
+                            {
+                                type: CLASS_SECTION,
+                                id: "eanWIP",
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "ean"
+                                },
+                                contents: [
+                                    {
+                                        type: CLASS_COLUMN,
+                                        title: "Nothing here yet!",
+                                        contents: []
+                                    },
+                                ]
+                            },
+                            {
+                                type: CLASS_SECTION,
+                                id: "codabarWIP",
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "codabar"
+                                },
+                                contents: [
+                                    {
+                                        type: CLASS_COLUMN,
+                                        title: "Nothing here yet!",
+                                        contents: []
+                                    },
+                                ]
+                            },
+                            {
+                                type: CLASS_SECTION,
+                                id: "msiWIP",
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "msi"
+                                },
+                                contents: [
+                                    {
+                                        type: CLASS_COLUMN,
+                                        title: "Nothing here yet!",
+                                        contents: []
+                                    },
+                                ]
+                            },
+                            {
+                                type: CLASS_SECTION,
+                                id: "uspsWIP",
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "usps"
+                                },
+                                contents: [
+                                    {
+                                        type: CLASS_COLUMN,
+                                        title: "Nothing here yet!",
+                                        contents: []
+                                    },
+                                ]
+                            },
+                            {
+                                type: CLASS_SECTION,
+                                id: "upuWIP",
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "upu"
+                                },
+                                contents: [
+                                    {
+                                        type: CLASS_COLUMN,
+                                        title: "Nothing here yet!",
+                                        contents: []
+                                    },
+                                ]
+                            },
+                            {
+                                type: CLASS_SECTION,
+                                id: "postbarWIP",
+                                conditions: {
+                                    showByDefault: false,
+                                    conditionID: "symbology",
+                                    conditionValue: "postbar"
+                                },
+                                contents: [
+                                    {
+                                        type: CLASS_COLUMN,
+                                        title: "Nothing here yet!",
+                                        contents: []
+                                    },
+                                ]
                             },
                         ]
                     },
@@ -356,12 +469,12 @@ let settings = {
     },
     initialize: function () {
         this.clearMenu()
-        recursiveInitialize(settingsArea, SETTINGS_MENU, 5)
+        recursiveInitialize(settingsArea, SETTINGS_MENU, 6)
     },
     conditions: [],
     update: function () {
         function hideSetting(settingDiv) {
-            if (!settingDiv.attributes.getNamedItem("style")) settingDiv.setAttribute("style", "visibility:hidden; max-height:0; margin:0;") // https://stackoverflow.com/a/59702383
+            if (!settingDiv.attributes.getNamedItem("style")) settingDiv.setAttribute("style", "visibility:hidden; max-height:0; max-width:0; margin:0;") // https://stackoverflow.com/a/59702383
         }
         function showSetting(settingDiv) {
             if (settingDiv.attributes.getNamedItem("style")) settingDiv.removeAttribute("style")
