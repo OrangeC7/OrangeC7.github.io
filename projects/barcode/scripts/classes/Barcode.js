@@ -112,7 +112,7 @@ class Barcode {
                 }
             }
 
-            this.renderCharacter(pos * 11, d, tempcode ? tempcode : code, colorW, colorB, dataMask)
+            this.renderCharacter(pos * 11, d, tempcode ? tempcode : code, this.highlightSections ? colorW : undefined, this.highlightSections ? colorB : undefined, dataMask)
             cs += d * pos
             pos++
 

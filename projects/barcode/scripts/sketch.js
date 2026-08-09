@@ -40,7 +40,14 @@ function randomCharacter(excludedCharacters = []) {
 
 function resetChoices() {
     if (userText.length === bc.data.length) {
-        if (settings.autoRandomize) setTimeout(randomizeBarcode, settings.autoRandomizeTime)
+        if (settings.autoRandomize) {
+            let wasSectionsHighlighted = settings.highlightSections
+            if (!wasSectionsHighlighted) settings.handlers.highlightSections.check()
+            setTimeout(() => {
+                randomizeBarcode()
+                if (!wasSectionsHighlighted) settings.handlers.highlightSections.uncheck()
+            }, settings.autoRandomizeTime)
+        }
         return
     }
 
