@@ -4,8 +4,6 @@ const CLASS_SETTING = "setting"
 const CLASS_TITLE = "settings-title"
 const SETTINGS_LABEL = "settings-label"
 
-const MAX_MULTIPLE_CHOICES = 5
-
 const BUTTON = "button"
 const CHECKBOX = "checkbox"
 const RADIO = "radio"
