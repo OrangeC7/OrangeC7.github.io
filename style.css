@@ -158,18 +158,29 @@ h2 {
   flex: 1 1 50%;
 }
 
-.column img {
-  width: 100%;
+.column li {
+  display: flex;
+  align-items: flex-start;
+  list-style-position: outside;
+  gap:0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.column li img {
+  flex-shrink:0;
+  width: 100px;
   height: auto;
 
   padding: 10px;
   border-radius: 20px;
   box-sizing: border-box;
+
+  object-fit: cover;
 }
 
 .description {
   color: var(--secondary);
-
+  
   display: flex;
   justify-content: center;
 }
