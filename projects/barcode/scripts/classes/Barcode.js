@@ -106,7 +106,7 @@ class Barcode {
         push()
         noStroke()
 
-        let characterWidths = CODE_128_WIDTHS[characterIndex]
+        let characterWidths = CODE_128_WIDTHS[characterIndex] ? CODE_128_WIDTHS[characterIndex] : CODE_128_WIDTHS[107]
         let black = true
         let dx = 0
         for (let nextBarWidth of characterWidths) {

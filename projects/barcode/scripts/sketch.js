@@ -64,9 +64,7 @@ function setup() {
     textSize(20)
 
     settings.initialize()
-    settings.handlers.randomize.setBehaviour(() => {
-        randomizeBarcode()
-    })
+    settings.handlers.randomize.setBehaviour(randomizeBarcode)
     settings.handlers.resetScore.setBehaviour(() => {
         scores = []
     })
@@ -192,6 +190,31 @@ function keyPressed() {
         case "Tab":
         case "Meta":
             break
+        case "q":
+            if (settings.appmodeMultChoice) {
+                buttons[0].activate()
+                break
+            }
+        case "w":
+            if (settings.appmodeMultChoice) {
+                buttons[1].activate()
+                break
+            }
+        case "e":
+            if (settings.appmodeMultChoice) {
+                buttons[2].activate()
+                break
+            }
+        case "r":
+            if (settings.appmodeMultChoice) {
+                buttons[3].activate()
+                break
+            }
+        case "t":
+            if (settings.appmodeMultChoice) {
+                buttons[4].activate()
+                break
+            }
         default:
             if (!settings.appmodeRead && !settings.appmodeEdit) break
             userInput.push(key)

@@ -33,9 +33,13 @@ class Button {
         this.characterCode = n
     }
 
+    activate() {
+        this.behaviour(this)
+    }
+
     update(mx, my, mp) {
         if (!mp && this.mouseWasPressed && this.isOnButton(mx, my)) {
-            this.behaviour(this)
+            this.activate()
         }
         this.mouseWasPressed = mp
     }
