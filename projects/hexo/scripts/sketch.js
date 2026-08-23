@@ -32,8 +32,12 @@ function setup() {
     viewPosition = createVector(0, 0)
 }
 
+let mouseWasPressed // this attempts to solve an issue on touchscreen where the screen will snap to the last touch position on a new touch
 function draw() {
-    if (mouseIsPressed && isMouseOnScreen()) viewPosition.add(mouseX - pmouseX, mouseY - pmouseY)
+    if (mouseIsPressed && isMouseOnScreen()) {
+        if (mouseWasPressed) viewPosition.add(mouseX - pmouseX, mouseY - pmouseY)
+        else mouseWasPressed = true
+    } else mouseWasPressed = false
     trueMouseX = (mouseX - viewPosition.x - width / 2) / viewScale
     trueMouseY = (mouseY - viewPosition.y - height / 2) / viewScale
     translate(viewPosition.x + width / 2, viewPosition.y + height / 2)
