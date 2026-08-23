@@ -40,6 +40,16 @@ const SETTINGS_MENU = [
                         id: "resetGameBoard",
                         label: "Restart game",
                     },
+                    {
+                        type: CLASS_SETTING,
+                        inputType: SLIDER,
+                        id: "numAIPlayers",
+                        label: "Number of AI players",
+                        min: 0,
+                        max: 2,
+                        default: 1,
+                        step: 1
+                    },
                 ]
             },
         ]

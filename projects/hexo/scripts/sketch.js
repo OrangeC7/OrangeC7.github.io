@@ -44,8 +44,8 @@ function draw() {
     scale(viewScale)
     background("#7e7e7e") // setting
 
-    if (gameboard.currentPlayer === PLAYER2) ai.playMove(gameboard)
-    // else aiP1.playMove(gameboard)
+    if (gameboard.currentPlayer === PLAYER2 && settings.numAIPlayers > 0) ai.playMove(gameboard)
+    else if (gameboard.currentPlayer === PLAYER1 && settings.numAIPlayers > 1) aiP1.playMove(gameboard)
 
     gameboard.renderBoard(trueMouseX, trueMouseY, viewScale)
 
