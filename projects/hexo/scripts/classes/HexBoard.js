@@ -56,12 +56,12 @@ class HexBoard {
         function isInt(a) { return a === Math.floor(a) }
         if (!isInt(boardR) || !isInt(boardQ)) console.error(`Hex.getHexAtCoordinates() is expecting an integer, but got ${boardR}, ${boardQ} instead`)
 
-        // for (let hex of this.boardHexes) {
-        //     if (hex.boardR === boardR && hex.boardQ === boardQ) return hex
-        // }
-        // return false
+        for (let hex of this.boardHexes) {
+            if (hex.boardR === boardR && hex.boardQ === boardQ) return hex
+        }
+        return false
 
-        return this.coordinateLookupTable.get(this.boardHexes[this.formatCoordinateString(boardR, boardQ)])
+        // return this.coordinateLookupTable.get(this.boardHexes[this.formatCoordinateString(boardR, boardQ)])
     }
 
     getHexAtScreenCoordinates(worldX, worldY) {
