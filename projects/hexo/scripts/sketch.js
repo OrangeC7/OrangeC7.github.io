@@ -4,7 +4,7 @@ let viewScale = 1
 let trueMouseX
 let trueMouseY
 let truePMouseX
-let truePMousey
+let truePMouseY
 let mouseClickStartPosition
 let lastClickWasDrag = false
 let clickRegistrationRadius = 10 // setting
@@ -21,7 +21,7 @@ function setup() {
     createCanvas(1000, 1000)
 
     isMouseOnScreen = function () {
-        return mouseX < width && mouseX > 0 && mouseY < height && mouseY > 0
+        return mouseX <= width && mouseX >= 0 && mouseY <= height && mouseY >= 0
     }
 
     settings.initialize()
@@ -62,7 +62,7 @@ function mouseReleased() {
 }
 
 function mouseClicked() {
-    if (!lastClickWasDrag && isMouseOnScreen() && gameboard.currentPlayer === PLAYER1) {
+    if (!lastClickWasDrag && isMouseOnScreen() && (settings.numAIPlayers < 1 || settings.numAIPlayers < 2 && gameboard.currentPlayer === PLAYER1)) {
         gameboard.click(trueMouseX, trueMouseY)
     }
 }

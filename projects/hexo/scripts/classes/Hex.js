@@ -1,7 +1,11 @@
+// R is the axis from top left to bottom right
+// Q is the axis from top to bottom
+// S is the axis from bottom left to top right, and is implicitly defined by R and Q
+
 class Hex {
-    constructor(boardX, boardY, radius) {
-        this.boardX = boardX
-        this.boardY = boardY
+    constructor(boardR, boardQ, radius) {
+        this.boardR = boardR
+        this.boardQ = boardQ
 
         this.setRadius(radius)
         this.updateScreenPosition()
@@ -15,32 +19,36 @@ class Hex {
 
     updateVertices() {
         this.vertices = [
-            { x: this.screenX - this.radius, y: this.screenY }, // Leftmost vertex
-            { x: this.screenX - this.radius / 2, y: this.screenY - Math.sqrt(this.radius * this.radius * 3 / 4) }, // Top left vertex
-            { x: this.screenX + this.radius / 2, y: this.screenY - Math.sqrt(this.radius * this.radius * 3 / 4) }, // Top right vertex
-            { x: this.screenX + this.radius, y: this.screenY }, // Rightmost vertex
-            { x: this.screenX + this.radius / 2, y: this.screenY + Math.sqrt(this.radius * this.radius * 3 / 4) }, // Bottom right vertex
-            { x: this.screenX - this.radius / 2, y: this.screenY + Math.sqrt(this.radius * this.radius * 3 / 4) }  // Bottom left vertex
+            { x: this.worldX - this.radius, y: this.worldY }, // Leftmost vertex
+            { x: this.worldX - this.radius / 2, y: this.worldY - Math.sqrt(this.radius * this.radius * 3 / 4) }, // Top left vertex
+            { x: this.worldX + this.radius / 2, y: this.worldY - Math.sqrt(this.radius * this.radius * 3 / 4) }, // Top right vertex
+            { x: this.worldX + this.radius, y: this.worldY }, // Rightmost vertex
+            { x: this.worldX + this.radius / 2, y: this.worldY + Math.sqrt(this.radius * this.radius * 3 / 4) }, // Bottom right vertex
+            { x: this.worldX - this.radius / 2, y: this.worldY + Math.sqrt(this.radius * this.radius * 3 / 4) }  // Bottom left vertex
         ]
     }
 
     updateScreenPosition() {
-        this.screenX = this.boardX * this.radius * 3 / 2
-        this.screenY = (this.boardY + this.boardX / 2) * this.height
+        this.worldX = this.boardR * this.radius * 3 / 2
+        this.worldY = (this.boardQ + this.boardR / 2) * this.height
         this.updateVertices()
     }
 
     // for reference: r is also equivalent to side length
-    setRadius(r) {
-        this.radius = r
-        this.height = 2 * Math.sqrt(r * r * 3 / 4)
+    setRadius(radius) {
+        this.radius = radius
+        this.height = 2 * Math.sqrt(radius * radius * 3 / 4)
         this.updateScreenPosition()
     }
 
-    setPosition(x, y) {
-        this.boardX = x
-        this.boardY = y
+    setPosition(r, q) {
+        this.boardR = r
+        this.boardQ = q
         this.updateScreenPosition()
+    }
+
+    getSCoordinate() {
+        return -this.boardQ - this.boardR
     }
 
     isPointIntersecting(x, y) {
@@ -63,7 +71,7 @@ class Hex {
     }
 
     getBoardCoordinates() {
-        return { x: this.boardX, y: this.boardY }
+        return { x: this.boardR, y: this.boardQ }
     }
 
     setPlayedState(playedState) {
@@ -71,7 +79,7 @@ class Hex {
     }
 
     drawHexagon(sizeFactor = 1) {
-        hexagon(this.screenX, this.screenY, this.radius * settings.relativeHexSize * sizeFactor)
+        hexagon(this.worldX, this.worldY, this.radius * settings.relativeHexSize * sizeFactor)
     }
 
     setHighlightStroke(strokeColor) {
@@ -81,7 +89,7 @@ class Hex {
         strokeWeight(highlightWeight < maxHighlightWeight ? highlightWeight : maxHighlightWeight)
     }
 
-    render(cursorX, cursorY, viewScale) {
+    render(cursorX, cursorY) {
         push()
         let player1color = "#ff6700" // setting
         let player2color = "#00ffff" // setting
@@ -109,7 +117,7 @@ class Hex {
     displayCoordinates() {
         push()
         textAlign(CENTER, CENTER)
-        text(`${this.boardX}, ${this.boardY}`, this.screenX, this.screenY)
+        text(`${this.boardR}, ${this.boardQ}`, this.worldX, this.worldY)
         pop()
     }
 

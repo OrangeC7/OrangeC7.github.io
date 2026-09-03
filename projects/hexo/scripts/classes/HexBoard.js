@@ -1,7 +1,9 @@
 class HexBoard {
-    constructor(hexRadius) {
+    constructor(hexRadius = 50) {
         this.boardHexes = []
         this.playedHexes = []
+        this.coordinateLookupTable = new Map()
+
         this.hexRadius = hexRadius
         this.addHex(0, 0)
 
@@ -22,12 +24,13 @@ class HexBoard {
 
     setHexRadius(r) {
         for (let hex of this.boardHexes) hex.setRadius(r)
+        this.hexRadius = r
     }
 
     updateHexFromNeighbors(hexBeingChecked) {
-        let hexBeingCheckedCoordinates = hexBeingChecked.getBoardCoordinates()
-        for (let hex of this.playedHexes) {
-            let hexCoordinates = hex.getBoardCoordinates()
+        const hexBeingCheckedCoordinates = hexBeingChecked.getBoardCoordinates()
+        for (const hex of this.playedHexes) {
+            const hexCoordinates = hex.getBoardCoordinates()
             if (hexBeingCheckedCoordinates.x === hexCoordinates.x && hexBeingCheckedCoordinates.y === hexCoordinates.y) continue
             for (const relativeCoordinates of HEX_NEIGHBORS) {
                 if (hexBeingCheckedCoordinates.x + relativeCoordinates.x === hexCoordinates.x && hexBeingCheckedCoordinates.y + relativeCoordinates.y === hexCoordinates.y) {
@@ -38,24 +41,31 @@ class HexBoard {
         }
     }
 
-    addHex(x, y) {
-        let newHex = new Hex(x, y, this.hexRadius)
+    formatCoordinateString(r, q) {
+        return `${r}, ${q}`
+    }
+
+    addHex(r, q) {
+        let newHex = new Hex(r, q, this.hexRadius)
         this.updateHexFromNeighbors(newHex)
         this.boardHexes.push(newHex)
+        this.coordinateLookupTable.set(this.formatCoordinateString(r, q), this.boardHexes.length - 1)
     }
 
-    getHexAtBoardCoordinates(boardX, boardY) {
+    getHexAtBoardCoordinates(boardR, boardQ) {
         function isInt(a) { return a === Math.floor(a) }
-        if (!isInt(boardX) || !isInt(boardY)) console.error(`Hex.getHexAtCoordinates() is expecting an integer, but got ${boardX}, ${boardY} instead`)
+        if (!isInt(boardR) || !isInt(boardQ)) console.error(`Hex.getHexAtCoordinates() is expecting an integer, but got ${boardR}, ${boardQ} instead`)
 
-        for (let hex of this.boardHexes) {
-            if (hex.boardX === boardX && hex.boardY === boardY) return hex
-        }
-        return false
+        // for (let hex of this.boardHexes) {
+        //     if (hex.boardR === boardR && hex.boardQ === boardQ) return hex
+        // }
+        // return false
+
+        return this.coordinateLookupTable.get(this.boardHexes[this.formatCoordinateString(boardR, boardQ)])
     }
 
-    getHexAtScreenCoordinates(screenX, screenY) {
-        for (let hex of this.boardHexes) if (hex.isPointIntersecting(screenX, screenY)) return hex
+    getHexAtScreenCoordinates(worldX, worldY) {
+        for (let hex of this.boardHexes) if (hex.isPointIntersecting(worldX, worldY)) return hex
         return false
     }
 
@@ -65,14 +75,14 @@ class HexBoard {
         for (let hex of this.boardHexes) {
             let hexPosition = hex.getBoardCoordinates()
             for (let i = 0; i < relativeHexPositionsToAdd.length; i++) {
-                if (hexPosition.x === centerHex.boardX + relativeHexPositionsToAdd[i].x && hexPosition.y === centerHex.boardY + relativeHexPositionsToAdd[i].y) {
+                if (hexPosition.x === centerHex.boardR + relativeHexPositionsToAdd[i].x && hexPosition.y === centerHex.boardQ + relativeHexPositionsToAdd[i].y) {
                     relativeHexPositionsToAdd[i] = false
                 }
             }
             this.updateHexFromNeighbors(hex)
         }
         for (let newRelativeHexPosition of relativeHexPositionsToAdd) {
-            if (newRelativeHexPosition) this.addHex(newRelativeHexPosition.x + centerHex.boardX, newRelativeHexPosition.y + centerHex.boardY, this.hexRadius)
+            if (newRelativeHexPosition) this.addHex(newRelativeHexPosition.x + centerHex.boardR, newRelativeHexPosition.y + centerHex.boardQ, this.hexRadius)
         }
     }
 
@@ -81,7 +91,7 @@ class HexBoard {
         let rowHexes = [hex]
         let currentHex = hex
         for (let j = 0; j < settings.winConditionLength; j++) {
-            let nextHex = this.getHexAtBoardCoordinates(currentHex.boardX + HEX_NEIGHBORS[rowDirection].x, currentHex.boardY + HEX_NEIGHBORS[rowDirection].y)
+            let nextHex = this.getHexAtBoardCoordinates(currentHex.boardR + HEX_NEIGHBORS[rowDirection].x, currentHex.boardQ + HEX_NEIGHBORS[rowDirection].y)
             if (!nextHex || nextHex.playedState !== currentHex.playedState) break
             rowLength++
             rowHexes.push(nextHex)
@@ -114,6 +124,10 @@ class HexBoard {
     }
 
     playMove(hex) {
+        if (!hex) {
+            console.error(`${hex} is undefined`)
+            return
+        }
         if (hex.playedState === UNPLAYED && !this.gameover) {
             hex.setPlayedState(this.currentPlayer)
             this.playedHexes.push(hex)
@@ -130,6 +144,21 @@ class HexBoard {
         } else {
             console.log("Could not play move, hex is either already played or game is over")
             return false
+        }
+    }
+
+    undoMove() {
+        let lastMove = this.playedHexes.pop()
+        if (lastMove.playedState !== UNPLAYED) {
+            lastMove.setPlayedState(UNPLAYED)
+
+            this.currentPlayedTurns--
+            if (this.currentPlayedTurns < 0) {
+                this.currentPlayedTurns = 1
+                this.currentPlayer = this.currentPlayer === PLAYER1 ? PLAYER2 : PLAYER1
+            }
+
+            this.gameover = false
         }
     }
 
@@ -154,14 +183,14 @@ class HexBoard {
 function expandBoard(hexBoard) {
     let oldBoardHexes = hexBoard.boardHexes.slice()
     for (let hex of oldBoardHexes) {
-        hexBoard.click(hex.screenX, hex.screenY)
+        hexBoard.click(hex.worldX, hex.worldY)
     }
 }
 
 function logRelativeHexFormat(hexBoard) {
     let finalString = ""
     for (let hex of hexBoard.boardHexes) {
-        finalString += `{ x: ${hex.boardX} , y: ${hex.boardY} },\n`
+        finalString += `{ x: ${hex.boardR} , y: ${hex.boardQ} },\n`
     }
     console.log(finalString)
 }
